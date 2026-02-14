@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Market - Smart Agriculture Platform</title>
+
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="hero-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Top Government Bar -->
+    <!-- <div class="top-bar">
+        <div class="top-bar-left">
+            <i class="fas fa-cloud-sun"></i> 30°C Country India
+        </div>
+        <div class="top-bar-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem">
+            <span>Farm2Market</span>
+        </div>
+        <div class="top-bar-right">
+            <i class="fas fa-sun"></i> 30°C Sunny <i class="fas fa-chevron-down"></i>
+        </div>
+    </div> -->
+
+
+
+    <!-- News Ticker -->
+    <div class="news-ticker">
+        <div class="ticker-content">
+            <span class="ticker-item">
+                <span class="ticker-label" data-i18n="home.priceUpdate">PRICE UPDATE</span>
+                Wheat prices increased by ₹50/quintal in Delhi Mandi
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="margin-right: 10px;"> <span
+                    class="brand-text">Farm2Market</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> <span
+                            data-i18n="nav.login">Login</span> <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> <span
+                                data-i18n="nav.login">Login</span></a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> <span
+                                data-i18n="nav.register">Register</span></a>
+                        <a href="verification.html" id="verificationLink" style="display:none;"><i
+                                class="fas fa-shield-alt"></i> Verification</a>
+                        <a href="#" onclick="logout()" id="logoutLink" style="display:none;"><i
+                                class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li class="nav-language-selector">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="hero-content" style="text-align: center;">
+
+            <h1 class="animated-title"
+                style="color: #FFD700; font-weight: 900; text-shadow: 2px 2px 8px rgba(0,0,0,0.3); letter-spacing: 1px;"
+                data-i18n="home.heroTitle">Jay Jawan,
+                Jay Kisan</h1>
+            <h2 data-i18n="home.heroSubtitle"
+                style="color: #ffffff; text-shadow: 1px 1px 4px rgba(0,0,0,0.6); font-weight: 700;">Data-Driven Fair
+                Pricing for Farmers</h2>
+            <p data-i18n="home.heroDesc">India's First Agri-Stock Market - B2B Trade Platform</p>
+
+
+
+            <!-- Price Cards -->
+            <div class="price-cards-container">
+                <div class="price-card wheat">
+                    <h3>Wheat</h3>
+                    <div class="price">₹1250</div>
+                    <div class="change down">22%</div>
+                </div>
+                <div class="price-card rice">
+                    <h3>Rice</h3>
+                    <div class="price">₹1800</div>
+                    <div class="change up">12%</div>
+                </div>
+                <div class="price-card cotton">
+                    <h3>Cotton</h3>
+                    <div class="price">₹5700</div>
+                    <div class="change neutral">20%</div>
+                </div>
+            </div>
+        </div>
+
+
+    </header>
+
+    <!-- Agricultural Market Dashboard Section -->
+    <section class="stock-market-section">
+        <div class="section-title">
+            <h2 data-i18n="market.dashboardTitle">Live Agricultural Market Dashboard</h2>
+            <p data-i18n="market.dashboardSubtitle">Real-time commodity prices and market trends - Click to explore
+                detailed analytics</p>
+        </div>
+
+        <div class="candlestick-container" onclick="goToLiveMarket()" style="cursor: pointer;">
+            <div class="market-chart-header">
+                <div class="chart-info">
+                    <h1>Welcome to Farm2Market</h1>
+                    <h3 data-i18n="market.marketIndex">Farm2Market Market Index (FMI)</h3>
+                    <span class="index-value">₹2,450 <i class="fas fa-arrow-up" style="color: #4CAF50;"></i>
+                        +2.8%</span>
+                </div>
+                <div class="chart-controls">
+                    <span class="time-frame active">Today</span>
+                    <span class="time-frame">Week</span>
+                    <span class="time-frame">Month</span>
+                    <span class="time-frame">Season</span>
+                </div>
+            </div>
+
+            <div class="candlestick-chart-wrapper">
+                <canvas id="candlestickChart"></canvas>
+            </div>
+
+            <div class="market-stats-row">
+                <div class="market-stat">
+                    <label data-i18n="market.marketOpen">Market Open</label>
+                    <span>₹2,400</span>
+                </div>
+                <div class="market-stat">
+                    <label data-i18n="market.dayHigh">Day High</label>
+                    <span>₹2,520</span>
+                </div>
+                <div class="market-stat">
+                    <label data-i18n="market.dayLow">Day Low</label>
+                    <span>₹2,380</span>
+                </div>
+                <div class="market-stat">
+                    <label data-i18n="market.currentPrice">Current Price</label>
+                    <span>₹2,450</span>
+                </div>
+                <div class="market-stat">
+                    <label data-i18n="market.tradeVolume">Trade Volume</label>
+                    <span>₹12.5 Cr</span>
+                </div>
+            </div>
+
+            <div class="view-market-btn">
+                <i class="fas fa-chart-line"></i> <span data-i18n="market.accessAnalytics">Access Full Market Analytics
+                    & Trading Platform</span>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <!-- Brand Column -->
+            <div class="footer-col brand-col">
+                <div class="footer-logo">
+                    <img src="farm2market.jpeg" alt="Farm2Market">
+                    <span class="brand-text">Farm2Market</span>
+                </div>
+                <!-- <p class="brand-desc">Empowering farmers with real-time data, fair pricing, and direct market access.</p> -->
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-col links-col">
+                <h4>QUICK LINKS</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="trade.html">Trade</a></li>
+                    <li><a href="analytics.html">Analytics</a></li>
+                </ul>
+            </div>
+
+            <!-- Support -->
+            <div class="footer-col support-col">
+                <h4>SUPPORT</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Farm2Market. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="candlestick.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="script.js"></script>
+    <script src="about.js"></script>
+    <script src="profile-widget.js"></script>
+
+</body>
+
+</html>

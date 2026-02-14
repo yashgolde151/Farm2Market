@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Farm2Market</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                <span>Farm2Market</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="verification.html" data-i18n="nav.verification">Verification</a></li>
+                <li><a href="#" onclick="showLanguageOptions()"><i class="fas fa-language"></i></a></li>
+                <li><a href="#" onclick="logout()" class="login-btn" data-i18n="nav.logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div style="padding: 100px 20px 50px; background: white; min-height: 100vh;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="color: #2c5530;" data-i18n="contact.title">Contact & Support</h1>
+                <p data-i18n="contact.subtitle">We're here to help farmers and buyers 24/7</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                <div class="verification-card">
+                    <h3><i class="fas fa-phone"></i><span data-i18n="contact.farmers">For Farmers</span></h3>
+                    <div style="margin: 1rem 0;">
+                        <p><strong><span data-i18n="contact.farmers.helpline">Helpline:</span></strong> 1800-FARM-HELP
+                            (24/7)</p>
+                        <p><strong><span data-i18n="contact.farmers.whatsapp">WhatsApp:</span></strong> +91-98765-43210
+                        </p>
+                        <p><strong><span data-i18n="contact.farmers.email">Email:</span></strong>
+                            farmers@farm2market.com</p>
+                    </div>
+                </div>
+
+                <div class="verification-card">
+                    <h3><i class="fas fa-building"></i><span data-i18n="contact.buyers">For Buyers</span></h3>
+                    <div style="margin: 1rem 0;">
+                        <p><strong><span data-i18n="contact.buyers.business">Business Line:</span></strong>
+                            +91-98765-43211</p>
+                        <p><strong><span data-i18n="contact.farmers.email">Email:</span></strong> buyers@farm2market.com
+                        </p>
+                        <p><strong><span data-i18n="contact.form.cat.partner">Partnership:</span></strong>
+                            partners@farm2market.com</p>
+                    </div>
+                </div>
+
+                <div class="verification-card">
+                    <h3><i class="fas fa-cog"></i><span data-i18n="contact.technical">Technical Support</span></h3>
+                    <div style="margin: 1rem 0;">
+                        <p><strong><span data-i18n="contact.farmers.email">Email:</span></strong> tech@farm2market.com
+                        </p>
+                        <p><strong><span data-i18n="contact.technical.github">GitHub:</span></strong> Farm2Market
+                            Repository</p>
+                        <p><strong><span data-i18n="contact.technical.api">API Support:</span></strong>
+                            api@farm2market.com</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="verification-card" style="margin-top: 2rem;">
+                <h3><i class="fas fa-envelope"></i><span data-i18n="contact.form.title">Send us a Message</span></h3>
+                <form style="display: flex; flex-direction: column; gap: 1rem;">
+                    <input type="text" placeholder="Your Name" data-i18n="contact.form.name"
+                        style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px;">
+                    <input type="email" placeholder="Your Email" data-i18n="contact.form.email"
+                        style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px;">
+                    <select style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px;">
+                        <option data-i18n="contact.form.category">Select Category</option>
+                        <option data-i18n="contact.form.cat.farmer">Farmer Support</option>
+                        <option data-i18n="contact.form.cat.buyer">Buyer Support</option>
+                        <option data-i18n="contact.form.cat.tech">Technical Issue</option>
+                        <option data-i18n="contact.form.cat.partner">Partnership</option>
+                    </select>
+                    <textarea placeholder="Your Message" rows="5" data-i18n="contact.form.message"
+                        style="padding: 0.75rem; border: 1px solid #ddd; border-radius: 5px;"></textarea>
+                    <button type="submit" class="btn-primary" data-i18n="contact.btn.send">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="script.js"></script>
+    <script>
+        // No default script needed here as i18n handles translations
+    </script>
+</body>
+
+</html>

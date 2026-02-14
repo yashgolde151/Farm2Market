@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test All Links - Farm2Market</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+        }
+
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+        }
+
+        .test-link {
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #f0f0f0;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .test-link:hover {
+            background: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Farm2Market - Link Test Page</h1>
+
+    <div class="test-section">
+        <h2>Main Pages</h2>
+        <a href="index.html" class="test-link">Home Page</a>
+        <a href="market.html" class="test-link">Live Market</a>
+        <a href="trade.html" class="test-link">Trade Dashboard</a>
+        <a href="analytics.html" class="test-link">Analytics</a>
+        <a href="weather.html" class="test-link">Weather & Risk</a>
+        <a href="verification.html" class="test-link">Verification</a>
+        <a href="contact.html" class="test-link">Contact Us</a>
+        <a href="help.html" class="test-link">Help Center</a>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Interactive Features</h2>
+        <button onclick="alert('Language change works!')" class="test-link" style="border: none; cursor: pointer;">Test
+            Language Change</button>
+        <button onclick="window.location.href='trade.html'" class="test-link"
+            style="border: none; cursor: pointer;">Test Dashboard Redirect</button>
+    </div>
+
+    <script>
+        // Test if script.js loads
+        console.log('Test page loaded successfully');
+
+        // Test market data
+        setTimeout(() => {
+            console.log('All pages should be working now');
+        }, 1000);
+    </script>
+</body>
+
+</html>

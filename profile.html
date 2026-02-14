@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Market - User Profile</title>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="profile-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="profile-page-body">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo"
+                style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; border-radius: 50%;">
+                <span class="brand-text" style="font-size: 1.5rem;">Farm2Market</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                <li><a href="index.html#about" data-i18n="nav.about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> Login <i
+                            class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> <span
+                                data-i18n="nav.login">Login</span></a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> <span
+                                data-i18n="nav.register">Register</span></a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li><a href="#" onclick="showLanguageOptions()"><i class="fas fa-language"></i></a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <!-- Sidebar -->
+        <aside class="profile-sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img id="profileImage" src="farm2market.jpeg" alt="Profile Photo">
+                    <div class="photo-upload">
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                        <button type="button" onclick="document.getElementById('photoUpload').click()"
+                            class="upload-btn">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                </div>
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileRole">Loading...</p>
+
+                <div class="profile-actions">
+                    <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> <span
+                            data-i18n="nav.logout">Logout</span></button>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                <a href="#" onclick="switchTab('settings')" id="nav-settings" class="active"><i
+                        class="fas fa-user-cog"></i> <span data-i18n="nav.profile">Settings</span></a>
+
+                <a href="verification.html"><i class="fas fa-shield-alt"></i> <span
+                        data-i18n="nav.verification">Verification</span></a>
+                <a href="trade.html"><i class="fas fa-exchange-alt"></i> <span data-i18n="nav.trade">My
+                        Trades</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="profile-main">
+            <!-- Verification Status Banner -->
+            <div id="verificationSection">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="profile-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-user-edit"></i> Edit Profile</h3>
+                </div>
+                <form class="profile-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="location" placeholder="City, State">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+
+
+        </main>
+    </div>
+
+    <script src="js/translations.js"></script>
+    <script src="js/translator.js"></script>
+    <script src="js/language-selector.js"></script>
+    <script src="js/auth-guard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize translator
+            if (window.translator) {
+                window.translator.translatePage();
+            }
+
+            loadProfileData();
+            setupVerificationSection();
+            loadProfilePhoto();
+        });
+
+        function loadProfileData() {
+            // Check both storages
+            const userProfileStr = localStorage.getItem('userProfile') || sessionStorage.getItem('userProfile');
+            let userProfile = JSON.parse(userProfileStr || '{}');
+
+            // If no profile data exists, check for registration data directly
+            if (!userProfile.name && localStorage.getItem('farm2market_users')) {
+                const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+                const email = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+                const foundUser = users.find(u => u.email === email);
+                if (foundUser) userProfile = foundUser;
+            }
+
+            const userRole = localStorage.getItem('userRole') || sessionStorage.getItem('userRole') || 'farmer';
+
+            // Smart Defaults
+            const defaults = {
+                name: 'Guest User',
+                email: 'guest@example.com',
+                phone: '+91 98765 43210',
+                location: userRole === 'farmer' ? 'Punjab, India' : 'New Delhi, India',
+                role: userRole
+            };
+
+            // Merge defaults with existing data (existing data takes precedence if not empty)
+            // Use defaults if field is missing or empty string
+            const finalProfile = {
+                name: userProfile.name || defaults.name,
+                email: userProfile.email || defaults.email,
+                phone: userProfile.phone || defaults.phone,
+                location: userProfile.location || defaults.location
+            };
+
+            document.getElementById('profileName').textContent = finalProfile.name;
+
+            const verificationStatus = localStorage.getItem('verificationStatus');
+            const statusText = verificationStatus === 'verified' ? 'Verified' : 'Unverified';
+            document.getElementById('profileRole').textContent = `${statusText} ${userRole.charAt(0).toUpperCase() + userRole.slice(1)}`;
+
+            document.getElementById('fullName').value = finalProfile.name;
+            document.getElementById('email').value = finalProfile.email;
+            document.getElementById('phone').value = finalProfile.phone;
+            document.getElementById('location').value = finalProfile.location;
+        }
+
+        function setupVerificationSection() {
+            const userRole = localStorage.getItem('userRole') || sessionStorage.getItem('userRole') || 'farmer'; // Default to farmer to prevent error
+            const verificationStatus = localStorage.getItem('verificationStatus');
+            const verificationSection = document.getElementById('verificationSection');
+
+            if (userRole === 'farmer') {
+                if (verificationStatus === 'verified') {
+                    verificationSection.innerHTML = `
+                        <div class="verification-card">
+                            <h3><i class="fas fa-tractor"></i> Farmer Verification</h3>
+                            <div class="verification-status verified">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Verified Farmer</span>
+                            </div>
+                            <div class="verification-details">
+                                <p><strong>Aadhar:</strong> Verified</p>
+                                <p><strong>Land Records:</strong> Verified</p>
+                                <p><strong>Bank Account:</strong> Verified</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    verificationSection.innerHTML = `
+                        <div class="verification-card">
+                            <h3><i class="fas fa-tractor"></i> Farmer Verification</h3>
+                            <div class="verification-status pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Verification Pending</span>
+                            </div>
+                            <div class="verification-details">
+
+                                <a href="verification.html" class="btn-verify-action">
+                                    <i class="fas fa-shield-alt"></i> Complete Verification
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else if (userRole === 'buyer') {
+                if (verificationStatus === 'verified') {
+                    verificationSection.innerHTML = `
+                        <div class="verification-card">
+                            <h3><i class="fas fa-shopping-bag"></i> Buyer Verification</h3>
+                            <div class="verification-status verified">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Verified Buyer</span>
+                            </div>
+                            <div class="verification-details">
+                                <p><strong>GST:</strong> Verified</p>
+                                <p><strong>Business License:</strong> Verified</p>
+                                <p><strong>Bank Account:</strong> Verified</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    verificationSection.innerHTML = `
+                        <div class="verification-card">
+                            <h3><i class="fas fa-shopping-bag"></i> Buyer Verification</h3>
+                            <div class="verification-status pending">
+                                <i class="fas fa-clock"></i>
+                                <span>Verification Pending</span>
+                            </div>
+                            <div class="verification-details">
+                                <p><a href="verification.html">Complete your verification</a></p>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Profile photo upload handler
+        document.getElementById('photoUpload').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                    localStorage.setItem('profilePhoto', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Load saved profile photo
+        function loadProfilePhoto() {
+            const savedPhoto = localStorage.getItem('profilePhoto');
+            if (savedPhoto) {
+                document.getElementById('profileImage').src = savedPhoto;
+            }
+        }
+
+        document.querySelector('.profile-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const updatedProfile = {
+                name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                location: document.getElementById('location').value,
+                role: localStorage.getItem('userRole') || sessionStorage.getItem('userRole')
+            };
+
+            localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+            alert('Profile updated successfully!');
+            loadProfileData();
+        });
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            // 1. Hide all main sections by checking for 'profile-section' class
+            // Note: verificationSection is separate, and settings/membership/business have profile-section class
+            // We need to target the SPECIFIC main content sections that are togggable
+
+            const sections = ['settings', 'business'];
+            sections.forEach(id => {
+                const el = document.getElementById(id + '-section');
+                if (el) el.style.display = 'none';
+            });
+
+            // 2. Remove active class from all sidebar links
+            document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+
+            // 3. Show target section
+            document.getElementById(tabId + '-section').style.display = 'block';
+
+            // 4. Add active class to clicked link
+            document.getElementById('nav-' + tabId).classList.add('active');
+        }
+
+
+    </script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="profile-widget.js"></script>
+</body>
+
+</html>

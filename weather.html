@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Market - Weather Forecast</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --accent-color: #ffd700;
+        }
+
+        body.weather-body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #312e81 100%);
+            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            margin: 0;
+            padding-bottom: 2rem;
+        }
+
+        /* Ambient Background Animations */
+        body.weather-body::before,
+        body.weather-body::after {
+            content: '';
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(79, 70, 229, 0.4);
+            filter: blur(80px);
+            z-index: -1;
+            animation: float 10s infinite alternate;
+        }
+
+        body.weather-body::before {
+            top: -50px;
+            left: -50px;
+        }
+
+        body.weather-body::after {
+            bottom: -50px;
+            right: -50px;
+            background: rgba(147, 51, 234, 0.4);
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(30px, 30px);
+            }
+        }
+
+        /* Navbar Override */
+        /* Navbar Override - High Visibility Mode */
+        .navbar {
+            background: rgba(15, 23, 42, 0.95) !important;
+            backdrop-filter: blur(16px) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-logo {
+            color: #ffffff !important;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo i {
+            color: #ffb700 !important;
+            /* Warm Yellow/Gold */
+            filter: drop-shadow(0 0 5px rgba(255, 183, 0, 0.5));
+        }
+
+        .nav-menu a {
+            color: rgba(255, 255, 255, 0.85) !important;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #ffffff !important;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Login Dropdown & Button Overrides */
+        .dropbtn {
+            color: white !important;
+        }
+
+        .dropdown-content {
+            background: #1e293b !important;
+            /* Slate-800 */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .dropdown-content a {
+            color: #e2e8f0 !important;
+            /* Slate-200 */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .dropdown-content a:hover {
+            background: #334155 !important;
+            color: #60a5fa !important;
+            /* Blue-400 */
+        }
+
+        .weather-dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            margin-top: 6rem;
+        }
+
+        /* Glassmorphism Cards */
+        .weather-header,
+        .weather-widget,
+        .forecast-container,
+        .detail-widget,
+        .metric {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .weather-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .location-selector {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .location-dropdown {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .location-dropdown:focus {
+            outline: none;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(180deg);
+        }
+
+        /* Main Weather Widget */
+        .weather-widget {
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-primary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .temp-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .temperature {
+            color: white;
+        }
+
+        .temp-value {
+            font-size: 6rem;
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .weather-condition {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        .animated-sun,
+        .weather-icon i {
+            font-size: 8rem;
+            color: #fbbf24;
+            filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4));
+            animation: weatherFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes weatherFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Metrics in circular grid */
+        .weather-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .metric {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .metric i {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: #60a5fa;
+        }
+
+        .metric .value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .metric .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Forecast Tabs */
+        .forecast-tabs {
+            margin: 2rem 0 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            padding: 0.5rem;
+            border-radius: 50px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-secondary);
+            padding: 0.75rem 2rem;
+            border-radius: 40px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #0f172a;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-btn:hover:not(.active) {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Forecast Scroll */
+        .forecast-hour {
+            min-width: 100px;
+            padding: 1.5rem;
+            margin-right: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+
+        .forecast-hour:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .detail-widget {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .widget-value {
+            font-size: 2.5rem;
+        }
+
+        .daily-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .daily-item:last-child {
+            border-bottom: none;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Footer adjustments */
+        .footer-weather {
+            margin-top: 4rem;
+            background: rgba(15, 23, 42, 0.95);
+            padding: 2rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            color: var(--text-secondary);
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+
+<body class="weather-body">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                Farm2Market
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                <li><a href="verification.html" data-i18n="nav.verification">Verification</a></li>
+                <li id="navProfile" style="display:none;"><a href="profile.html" data-i18n="nav.profile">My Profile</a>
+                </li>
+                <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> <span
+                            data-i18n="nav.login">Login</span> <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> <span
+                                data-i18n="nav.login">Login</span></a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> <span
+                                data-i18n="nav.register">Register</span></a>
+                    </div>
+                </li>
+                <li><a href="weather.html" class="active"><i class="fas fa-cloud-sun"></i></a></li>
+                <li class="nav-language-selector">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Weather App Container -->
+    <div class="weather-dashboard">
+        <!-- Header Section -->
+        <div class="weather-header">
+            <div class="location-selector">
+                <i class="fas fa-map-marker-alt"></i>
+                <select class="location-dropdown">
+                    <option>Ludhiana, Punjab</option>
+                    <option>Chandigarh, Punjab</option>
+                    <option>Amritsar, Punjab</option>
+                </select>
+                <button class="refresh-btn" onclick="getLiveLocation()" title="Use My Location"><i
+                        class="fas fa-location-arrow"></i></button>
+                <button class="refresh-btn" onclick="updateTime()"><i class="fas fa-sync-alt"></i></button>
+            </div>
+            <div class="weather-time">
+                <span id="currentTime">12:30 PM</span>
+                <small>Last updated: 2 min ago</small>
+            </div>
+        </div>
+
+        <!-- Main Weather Widget -->
+        <div class="weather-widget">
+            <div class="weather-primary">
+                <div class="weather-icon">
+                    <div class="animated-sun">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                </div>
+                <div class="temperature">
+                    <span class="temp-value">28</span>
+                    <span class="temp-unit">°C</span>
+                    <div class="weather-condition">Sunny</div>
+                    <div class="feels-like">Feels like 32°C</div>
+                </div>
+            </div>
+            <div class="weather-metrics">
+                <div class="metric">
+                    <i class="fas fa-tint"></i>
+                    <span class="value">65%</span>
+                    <span class="label" data-i18n="weather.humidity">Humidity</span>
+                </div>
+                <div class="metric">
+                    <i class="fas fa-wind"></i>
+                    <span class="value">12</span>
+                    <span class="label" data-i18n="weather.wind">Wind km/h</span>
+                </div>
+                <div class="metric">
+                    <i class="fas fa-eye"></i>
+                    <span class="value">15</span>
+                    <span class="label" data-i18n="weather.visibility">Visibility km</span>
+                </div>
+                <div class="metric">
+                    <i class="fas fa-thermometer-half"></i>
+                    <span class="value">1013</span>
+                    <span class="label" data-i18n="weather.pressure">Pressure mb</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forecast Tabs -->
+        <div class="forecast-tabs">
+            <button class="tab-btn active" onclick="showTab('hourly')">Hourly</button>
+            <button class="tab-btn" onclick="showTab('daily')">7-Day</button>
+            <button class="tab-btn" onclick="showTab('farming')">Farming</button>
+        </div>
+
+        <!-- Hourly Forecast -->
+        <div class="forecast-container" id="hourlyForecast">
+            <div class="forecast-scroll">
+                <div class="forecast-hour">
+                    <span class="time">Now</span>
+                    <i class="fas fa-sun weather-icon-small"></i>
+                    <span class="temp">28°</span>
+                    <span class="rain">0%</span>
+                </div>
+                <div class="forecast-hour">
+                    <span class="time">2 PM</span>
+                    <i class="fas fa-sun weather-icon-small"></i>
+                    <span class="temp">32°</span>
+                    <span class="rain">0%</span>
+                </div>
+                <div class="forecast-hour">
+                    <span class="time">3 PM</span>
+                    <i class="fas fa-cloud-sun weather-icon-small"></i>
+                    <span class="temp">30°</span>
+                    <span class="rain">10%</span>
+                </div>
+                <div class="forecast-hour">
+                    <span class="time">4 PM</span>
+                    <i class="fas fa-cloud weather-icon-small"></i>
+                    <span class="temp">28°</span>
+                    <span class="rain">20%</span>
+                </div>
+                <div class="forecast-hour">
+                    <span class="time">5 PM</span>
+                    <i class="fas fa-cloud-rain weather-icon-small"></i>
+                    <span class="temp">26°</span>
+                    <span class="rain">70%</span>
+                </div>
+                <div class="forecast-hour">
+                    <span class="time">6 PM</span>
+                    <i class="fas fa-cloud-rain weather-icon-small"></i>
+                    <span class="temp">24°</span>
+                    <span class="rain">85%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Forecast -->
+        <div class="forecast-container hidden" id="dailyForecast">
+            <div class="daily-list">
+                <div class="daily-item">
+                    <span class="day">Today</span>
+                    <i class="fas fa-sun"></i>
+                    <div class="temp-range">
+                        <span class="high">32°</span>
+                        <span class="low">22°</span>
+                    </div>
+                    <span class="rain-prob">0%</span>
+                </div>
+                <div class="daily-item">
+                    <span class="day">Tomorrow</span>
+                    <i class="fas fa-cloud-sun"></i>
+                    <div class="temp-range">
+                        <span class="high">30°</span>
+                        <span class="low">20°</span>
+                    </div>
+                    <span class="rain-prob">15%</span>
+                </div>
+                <div class="daily-item">
+                    <span class="day">Wednesday</span>
+                    <i class="fas fa-cloud-rain"></i>
+                    <div class="temp-range">
+                        <span class="high">26°</span>
+                        <span class="low">18°</span>
+                    </div>
+                    <span class="rain-prob">85%</span>
+                </div>
+                <div class="daily-item">
+                    <span class="day">Thursday</span>
+                    <i class="fas fa-cloud-rain"></i>
+                    <div class="temp-range">
+                        <span class="high">24°</span>
+                        <span class="low">17°</span>
+                    </div>
+                    <span class="rain-prob">70%</span>
+                </div>
+                <div class="daily-item">
+                    <span class="day">Friday</span>
+                    <i class="fas fa-cloud-sun"></i>
+                    <div class="temp-range">
+                        <span class="high">28°</span>
+                        <span class="low">19°</span>
+                    </div>
+                    <span class="rain-prob">25%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Farming Forecast -->
+        <div class="forecast-container hidden" id="farmingForecast">
+            <div class="farming-alerts">
+                <div class="alert-item critical">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Heat Wave Alert</strong>
+                        <p>Increase irrigation frequency for next 3 days</p>
+                    </div>
+                </div>
+                <div class="alert-item info">
+                    <i class="fas fa-cloud-rain"></i>
+                    <div>
+                        <strong>Rain Expected Wed-Thu</strong>
+                        <p>Perfect timing for rice cultivation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Details Cards -->
+        <div class="details-grid">
+            <div class="detail-widget">
+                <div class="widget-header">
+                    <i class="fas fa-sun"></i>
+                    <span>UV Index</span>
+                </div>
+                <div class="widget-value">8</div>
+                <div class="widget-status high">Very High</div>
+                <div class="widget-bar">
+                    <div class="bar-fill" style="width: 80%;"></div>
+                </div>
+            </div>
+            <div class="detail-widget">
+                <div class="widget-header">
+                    <i class="fas fa-sunrise"></i>
+                    <span>Sun Times</span>
+                </div>
+                <div class="sun-times">
+                    <div class="sun-time">
+                        <span class="label">Sunrise</span>
+                        <span class="time">6:12 AM</span>
+                    </div>
+                    <div class="sun-time">
+                        <span class="label">Sunset</span>
+                        <span class="time">7:45 PM</span>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-widget">
+                <div class="widget-header">
+                    <i class="fas fa-droplet"></i>
+                    <span>Air Quality</span>
+                </div>
+                <div class="widget-value">Good</div>
+                <div class="widget-status good">AQI: 45</div>
+                <div class="aqi-scale">
+                    <div class="aqi-indicator" style="left: 18%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market"
+                    style="height: 30px; vertical-align: middle; margin-right: 0.5rem;">
+                <strong>Farm2Market</strong>
+            </div>
+            <div class="footer-links">
+                <div class="link-col">
+                    <h4 data-i18n="home.quickLinks">Quick Links</h4>
+                    <a href="index.html" data-i18n="nav.home">Home</a>
+                    <a href="trade.html" data-i18n="nav.trade">Trade</a>
+                    <a href="analytics.html" data-i18n="nav.analytics">Analytics</a>
+                </div>
+                <div class="link-col">
+                    <h4 data-i18n="home.support">Support</h4>
+                    <a href="#" data-i18n="home.privacyPolicy">Privacy Policy</a>
+                    <a href="#" data-i18n="home.helpCenter">Help Center</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Farm2Market. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.forecast-container').forEach(container => container.classList.add('hidden'));
+
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Forecast').classList.remove('hidden');
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        function showLanguageOptions() {
+            showNotification('Language options coming soon!', 'info');
+        }
+
+        function getLiveLocation() {
+            if (navigator.geolocation) {
+                showNotification('Fetching your location...', 'info');
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                showNotification("Geolocation is not supported by this browser.", 'error');
+            }
+        }
+
+        function showPosition(position) {
+            // Simulate fetching data for these coordinates
+            // In a real app, you would call an API with position.coords.latitude & longitude
+
+            // update UI to show "Current Location"
+            const locationSelect = document.querySelector('.location-dropdown');
+
+            // Add "Current Location" option if not exists
+            let currentOption = Array.from(locationSelect.options).find(opt => opt.text === "Your Location");
+            if (!currentOption) {
+                const option = document.createElement("option");
+                option.text = "Your Location";
+                option.value = "current";
+                locationSelect.add(option, 0); // Add to top
+                currentOption = option;
+            }
+            locationSelect.value = "current";
+
+            // Simulate Live Weather Data Update
+            updateWeatherUI();
+
+            showNotification('Weather updated for your location!', 'success');
+        }
+
+        function updateWeatherUI() {
+            // Randomize slightly to simulate "live" data difference
+            const newTemp = Math.floor(Math.random() * (35 - 25) + 25);
+            document.querySelector('.temp-value').textContent = newTemp;
+
+            const conditions = ['Sunny', 'Clear', 'Partly Cloudy'];
+            document.querySelector('.weather-condition').textContent = conditions[Math.floor(Math.random() * conditions.length)];
+
+            document.querySelector('.metric:nth-child(1) .value').textContent = Math.floor(Math.random() * (80 - 40) + 40) + '%'; // Humidity
+            document.querySelector('.metric:nth-child(2) .value').textContent = Math.floor(Math.random() * (20 - 5) + 5); // Wind
+        }
+
+        function showError(error) {
+            switch (error.code) {
+                case error.PERMISSION_DENIED:
+                    showNotification("User denied the request for Geolocation.", 'error');
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    showNotification("Location information is unavailable.", 'error');
+                    break;
+                case error.TIMEOUT:
+                    showNotification("The request to get user location timed out.", 'error');
+                    break;
+                case error.UNKNOWN_ERROR:
+                    showNotification("An unknown error occurred.", 'error');
+                    break;
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 5px;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+    <script src="auth-guard.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+
+</body>
+
+</html>

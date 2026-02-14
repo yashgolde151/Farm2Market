@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Market - About Us</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                Farm2Market
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                <li><a href="about.html" class="active" data-i18n="nav.about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> <span
+                            data-i18n="nav.login">Login</span> <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> <span
+                                data-i18n="nav.login">Login</span></a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> <span
+                                data-i18n="nav.register">Register</span></a>
+                        <a href="verification.html" id="verificationLink" style="display:none;"><i
+                                class="fas fa-shield-alt"></i> <span
+                                data-i18n="nav.verification">Verification</span></a>
+                        <a href="#" onclick="logout()" id="logoutLink" style="display:none;"><i
+                                class="fas fa-sign-out-alt"></i> <span data-i18n="nav.logout">Logout</span></a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li class="nav-language-selector">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Us Section -->
+    <section class="about-section">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 data-i18n="about.title">About Farm2Market</h2>
+                <p data-i18n="about.subtitle">Revolutionizing Indian Agriculture Through Technology</p>
+            </div>
+
+            <!-- About Content Grid -->
+            <div class="about-content-grid">
+                <!-- Mission Card -->
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <h3 data-i18n="about.missionTitle">Our Mission</h3>
+                    <p data-i18n="about.missionDesc">Empower Indian farmers with real-time market data, fair pricing,
+                        and direct access to buyers,
+                        eliminating middlemen and ensuring equitable agricultural commerce.</p>
+                </div>
+
+                <!-- Vision Card -->
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 data-i18n="about.visionTitle">Our Vision</h3>
+                    <p data-i18n="about.visionDesc">Create a transparent, technology-enabled agri-market ecosystem where
+                        farmers and buyers connect
+                        directly, ensuring prosperity for India's agricultural sector.</p>
+                </div>
+
+                <!-- Values Card -->
+                <div class="about-card">
+                    <div class="about-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 data-i18n="about.valuesTitle">Our Values</h3>
+                    <p data-i18n="about.valuesDesc">Transparency • Trust • Empowerment • Innovation • Fairness. We
+                        believe in creating equitable
+                        solutions that benefit all stakeholders in the agricultural value chain.</p>
+                </div>
+            </div>
+
+            <!-- Why Choose Us Section -->
+            <div class="why-choose-us">
+                <h3 data-i18n="about.whyChooseUs">Why Choose Farm2Market?</h3>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h4 data-i18n="about.feature1Title">Direct Connection</h4>
+                        <p data-i18n="about.feature1Desc">Connect directly with buyers, eliminating 30-40% middlemen
+                            commissions</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4 data-i18n="about.feature2Title">Real-Time Data</h4>
+                        <p data-i18n="about.feature2Desc">Access live market prices, trends, and AI-powered predictions
+                        </p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4 data-i18n="about.feature3Title">Government Verified</h4>
+                        <p data-i18n="about.feature3Desc">100% secure and verified by government authentication systems
+                        </p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-cloud-sun"></i>
+                        </div>
+                        <h4 data-i18n="about.feature4Title">Weather Integration</h4>
+                        <p data-i18n="about.feature4Desc">Hyperlocal weather forecasts for better farming decisions</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4 data-i18n="about.feature5Title">Mobile Friendly</h4>
+                        <p data-i18n="about.feature5Desc">Access from anywhere, anytime on your smartphone</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h4 data-i18n="about.feature6Title">24/7 Support</h4>
+                        <p data-i18n="about.feature6Desc">Dedicated support team available round the clock</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="about-stats">
+                <h3 data-i18n="about.impactTitle">Our Impact</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">15,000+</div>
+                        <div class="stat-label" data-i18n="about.statFarmers">Active Farmers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label" data-i18n="about.statBuyers">Registered Buyers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">₹50 Cr+</div>
+                        <div class="stat-label" data-i18n="about.statVolume">Trade Volume</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">99.8%</div>
+                        <div class="stat-label" data-i18n="about.statVerified">Verified Users</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Section -->
+            <!-- Team Section -->
+            <div class="about-team">
+                <h3 data-i18n="about.teamTitle">Meet Our Team</h3>
+                <div class="team-grid">
+                    <!-- Member 1 -->
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://ui-avatars.com/api/?name=Yash+Golde&background=4CAF50&color=fff&size=150"
+                                alt="Yash Golde">
+                        </div>
+                        <h4>Yash Golde</h4>
+                        <p class="member-role" data-i18n="about.roleDev">Full Stack Developer</p>
+                        <div class="member-social">
+                        </div>
+                    </div>
+
+                    <!-- Member 2 -->
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://ui-avatars.com/api/?name=Sanjay+Jadhav&background=4CAF50&color=fff&size=150"
+                                alt="Sanjay Jadhav">
+                        </div>
+                        <h4>Sanjay Jadhav</h4>
+                        <p class="member-role" data-i18n="about.roleLead">Team Lead & Architect</p>
+                        <div class="member-social">
+                            <!-- Social links removed -->
+                        </div>
+                    </div>
+
+                    <!-- Member 3 -->
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://ui-avatars.com/api/?name=Sanchita+Yashwantrao&background=4CAF50&color=fff&size=150"
+                                alt="Sanchita Yashwantrao">
+                        </div>
+                        <h4>Sanchita Yashwantrao</h4>
+                        <p class="member-role" data-i18n="about.roleDesigner">UI/UX Designer</p>
+                        <div class="member-social">
+                        </div>
+                    </div>
+
+                    <!-- Member 4 -->
+                    <div class="team-member">
+                        <div class="member-image">
+                            <img src="https://ui-avatars.com/api/?name=Sonam+Choudhary&background=4CAF50&color=fff&size=150"
+                                alt="Sonam Choudhary">
+                        </div>
+                        <h4>Sonam Choudhary</h4>
+                        <p class="member-role" data-i18n="about.roleResearcher">Market Researcher</p>
+                        <div class="member-social">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="about-cta">
+                <h3 data-i18n="about.ctaTitle">Ready to Transform Your Agricultural Business?</h3>
+                <p data-i18n="about.ctaDesc">Join thousands of farmers and buyers already benefiting from Farm2Market
+                </p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn btn-primary" data-i18n="about.ctaBtnStarted">Get Started Now</a>
+                    <a href="trade.html" class="btn btn-secondary" data-i18n="about.ctaBtnExplore">Explore Market</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-strip">
+            Connecting farmers with data-driven pricing and direct market access
+        </div>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4><img src="farm2market.jpeg" alt="Farm2Market"
+                        style="height: 30px; vertical-align: middle; margin-right: 0.5rem;">Farm2Market</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                    <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                    <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+                    <li><a href="weather.html" data-i18n="nav.weather">Weather</a></li>
+                    <li><a href="verification.html" data-i18n="nav.verification">Verification</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="home.quickLinks">Quick Links</h4>
+                <ul>
+                    <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                    <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                    <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                    <li><a href="verification.html" data-i18n="nav.verification">Verification</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="home.support">Support</h4>
+                <ul>
+                    <li><a href="#" data-i18n="home.helpCenter">Help Center</a></li>
+                    <li><a href="#" data-i18n="home.privacyPolicy">Privacy Policy</a></li>
+                    <li><a href="#" data-i18n="home.trustSafety">Trust & Safety</a></li>
+                </ul>
+                <p style="margin-top: 1rem; font-size: 0.7rem; color: #888;" data-i18n="home.disclaimer">
+                    Disclaimer: Agricultural data is indicative. Please verify at local mandis for direct transactions.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth-guard.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

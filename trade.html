@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade - Farm2Market</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                <span>Farm2Market</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" class="active" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li id="navProfile" style="display:none;"><a href="profile.html">My Profile</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> Login <i
+                            class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                        <a href="verification.html" id="verificationLink" style="display:none;"><i
+                                class="fas fa-shield-alt"></i> Verification</a>
+                        <a href="#" onclick="logout()" id="logoutLink" style="display:none;"><i
+                                class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li class="nav-language-selector">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="trade-container">
+        <div class="trade-background"></div>
+        <div class="container">
+            <div class="trade-header">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 80px; margin-bottom: 1rem;">
+                <h1 data-i18n="trade.title">Direct B2B Trading Platform</h1>
+                <p data-i18n="trade.subtitle">Connect farmers and buyers without middlemen</p>
+            </div>
+
+            <div id="dashboardSelector">
+                <button class="btn-primary" onclick="showDashboard('farmer')">
+                    <i class="fas fa-tractor"></i> <span data-i18n="trade.btnFarmer">Farmer Dashboard</span>
+                </button>
+                <button class="btn-secondary" onclick="showDashboard('buyer')">
+                    <i class="fas fa-shopping-cart"></i> <span data-i18n="trade.btnBuyer">Buyer Dashboard</span>
+                </button>
+            </div>
+
+            <!-- Floating Elements -->
+            <div class="floating-elements">
+                <i class="fas fa-leaf floating-leaf" style="font-size: 2rem;"></i>
+                <i class="fas fa-seedling floating-leaf" style="font-size: 1.5rem;"></i>
+                <i class="fas fa-leaf floating-leaf" style="font-size: 1.8rem;"></i>
+                <i class="fas fa-tree floating-leaf" style="font-size: 2.2rem;"></i>
+                <i class="fas fa-leaf floating-leaf" style="font-size: 1.6rem;"></i>
+            </div>
+
+            <!-- Farmer Dashboard -->
+            <div id="farmerDashboard" class="dashboard hidden">
+                <div class="dashboard-header">
+                    <h2 data-i18n="trade.farmer.title">Farmer Dashboard</h2>
+                    <div style="margin-left: auto; display: flex; gap: 1rem; margin-right: 1rem;">
+                        <button class="btn-profile" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </button>
+                        <button class="btn-home" onclick="window.location.href='index.html'">
+                            <i class="fas fa-home"></i> Back to Home
+                        </button>
+                    </div>
+                    <button class="close-btn" onclick="closeDashboard()">&times;</button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Farmer Dashboard Content -->
+                    <div class="dashboard-content">
+                        <!-- Dashboard Header removed as it is duplicate of the outer one -->
+                        <div class="price-widget">
+                            <div class="crop-selector">
+                                <select id="riceSelect" onchange="updateRiceData()">
+                                    <option value="basmati">🌾 Basmati Rice</option>
+                                    <option value="non-basmati">🌾 Non-Basmati Rice</option>
+                                    <option value="brown-rice">🌾 Brown Rice</option>
+                                </select>
+                                <button class="refresh-btn" onclick="refreshRicePrices()"><i
+                                        class="fas fa-sync-alt"></i></button>
+                            </div>
+
+                            <div class="price-ticker">
+                                <div class="ticker-item">
+                                    <span class="ticker-label" data-i18n="trade.currentRicePrice">Current Rice
+                                        Price</span>
+                                    <span class="ticker-price" id="currentRicePrice">₹1,890</span>
+                                    <span class="ticker-change up" id="ricePriceChange">+₹25 (+1.3%)</span>
+                                </div>
+                            </div>
+
+                            <div class="price-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Today's High</span>
+                                    <span class="stat-value">₹1,920</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Today's Low</span>
+                                    <span class="stat-value">₹1,875</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Mandi Rate</span>
+                                    <span class="stat-value">₹1,850</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Export Rate</span>
+                                    <span class="stat-value">₹2,100</span>
+                                </div>
+                            </div>
+
+                            <div class="ai-insights">
+                                <div class="insight-item">
+                                    <i class="fas fa-brain"></i>
+                                    <div>
+                                        <strong>Rice Market Forecast:</strong>
+                                        <span class="prediction-value up">₹1,950 (+3.2%) in 7 days</span>
+                                    </div>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <div>
+                                        <strong>Best Selling Window:</strong>
+                                        <span class="best-time">Next 2 weeks (High demand)</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="price-actions">
+                                <button class="btn-trends" onclick="showRiceTrends()">📈 Rice Trends</button>
+                                <button class="btn-alert" onclick="setRiceAlert()">🔔 Price Alert</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- List Your Crops Section -->
+                    <div class="dashboard-card crop-listing">
+                        <h3 data-i18n="trade.listCrops"><i class="fas fa-plus-circle"></i> List Your Crops</h3>
+                        <form class="crop-form" onsubmit="submitCropListing(event)">
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <i class="fas fa-seedling input-icon"></i>
+                                    <select name="cropType" id="cropType" required onchange="updateCropVarieties(this)"
+                                        class="floating-input" placeholder=" ">
+                                        <option value="" disabled selected></option>
+                                        <optgroup label="Cereals">
+                                            <option value="rice-basmati">🌾 Rice - Basmati</option>
+                                            <option value="rice-non-basmati">🌾 Rice - Non-Basmati</option>
+                                            <option value="wheat">🌾 Wheat</option>
+                                            <option value="maize">🌽 Maize</option>
+                                            <option value="bajra">🌾 Bajra (Pearl Millet)</option>
+                                        </optgroup>
+                                        <optgroup label="Pulses">
+                                            <option value="chana">🥘 Chana (Bengal Gram)</option>
+                                            <option value="toor">🥘 Toor (Arhar)</option>
+                                            <option value="moong">🥘 Moong (Green Gram)</option>
+                                            <option value="urad">🥘 Urad (Black Gram)</option>
+                                        </optgroup>
+                                        <optgroup label="Oilseeds">
+                                            <option value="soybean">🌱 Soybean</option>
+                                            <option value="mustard">🌼 Mustard</option>
+                                            <option value="groundnut">🥜 Groundnut</option>
+                                            <option value="sunflower">🌻 Sunflower</option>
+                                        </optgroup>
+                                        <optgroup label="Cash Crops">
+                                            <option value="cotton">🌿 Cotton</option>
+                                            <option value="sugarcane">🎋 Sugarcane</option>
+                                            <option value="jute">🧶 Jute</option>
+                                        </optgroup>
+                                        <optgroup label="Spices">
+                                            <option value="turmeric">🟡 Turmeric</option>
+                                            <option value="chilli">🌶️ Chilli</option>
+                                            <option value="cumin">🧂 Cumin (Jeera)</option>
+                                        </optgroup>
+                                    </select>
+                                    <label for="cropType" class="floating-label" data-i18n="trade.selectCategory">Select
+                                        Crop Category</label>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-list-ul input-icon"></i>
+                                    <select name="cropVariety" id="cropVarietySelect" required class="floating-input"
+                                        placeholder=" ">
+                                        <option value="" disabled selected></option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <label for="cropVarietySelect" class="floating-label"
+                                        data-i18n="trade.selectVariety">Select Variety</label>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <i class="fas fa-weight-hanging input-icon"></i>
+                                    <input type="number" name="quantity" id="quantity" class="floating-input"
+                                        placeholder=" " min="1" required>
+                                    <label for="quantity" class="floating-label" data-i18n="trade.quantity">Quantity
+                                        (quintals)</label>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-rupee-sign input-icon"></i>
+                                    <input type="number" name="price" id="price" class="floating-input" placeholder=" "
+                                        min="500" required>
+                                    <label for="price" class="floating-label" data-i18n="trade.expectedPrice">Expected
+                                        Price/quintal</label>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <i class="fas fa-star input-icon"></i>
+                                    <select name="quality" id="quality" required class="floating-input" placeholder=" ">
+                                        <option value="" disabled selected></option>
+                                        <option value="premium">Premium (A+ Grade)</option>
+                                        <option value="standard">Standard (A Grade)</option>
+                                        <option value="commercial">Commercial (B Grade)</option>
+                                    </select>
+                                    <label for="quality" class="floating-label" data-i18n="trade.qualityGrade">Quality
+                                        Grade</label>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-calendar-alt input-icon"></i>
+                                    <input type="date" name="harvestDate" id="harvestDate" class="floating-input"
+                                        required placeholder=" ">
+                                    <label for="harvestDate" class="floating-label"
+                                        data-i18n="trade.harvestDate">Harvest Date</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group full-width">
+                                <i class="fas fa-align-left input-icon"></i>
+                                <textarea name="description" id="description" class="floating-input" rows="2"
+                                    placeholder=" "></textarea>
+                                <label for="description" class="floating-label">Crop details: storage conditions,
+                                    moisture content...</label>
+                            </div>
+
+                            <div class="form-row">
+                                <input type="text" name="farmLocation" placeholder="Farm Location/Village" required>
+                                <input type="text" name="pincode" placeholder="Pincode" pattern="[0-9]{6}" required>
+                            </div>
+
+                            <div class="certification-section">
+                                <label><input type="checkbox" name="organic"> Organic Certified</label>
+                                <label><input type="checkbox" name="fpo"> FPO Member</label>
+                                <label><input type="checkbox" name="msp"> MSP Eligible</label>
+                            </div>
+
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-upload"></i> <span data-i18n="trade.btnListCrop">List Crop for
+                                    Sale</span>
+                            </button>
+                        </form>
+
+                        <div class="my-listings">
+                            <h4 data-i18n="trade.myListings">📋 My Active Listings</h4>
+                            <div class="listings-container" id="myListings">
+                                <div class="listing-item">
+                                    <div class="listing-info">
+                                        <strong>Basmati Rice Pusa-1121</strong>
+                                        <span>25 quintals • ₹1,850/q • Premium Grade</span>
+                                    </div>
+                                    <div class="listing-status active">Active</div>
+                                    <button class="edit-btn"><i class="fas fa-edit"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Buyer Dashboard -->
+            <div id="buyerDashboard" class="dashboard hidden">
+                <div class="dashboard-header">
+                    <h2 data-i18n="trade.buyerTitle">Buyer Dashboard</h2>
+                    <div style="margin-left: auto; display: flex; gap: 1rem; margin-right: 1rem;">
+                        <button class="btn-profile" onclick="window.location.href='profile.html'">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </button>
+                        <button class="btn-home" onclick="window.location.href='index.html'">
+                            <i class="fas fa-home"></i> Back to Home
+                        </button>
+                    </div>
+                    <button class="close-btn" onclick="closeDashboard()">&times;</button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card full-width">
+                        <h3 data-i18n="trade.availableCrops">Available Crops</h3>
+                        <div class="crops-grid" id="availableCrops"></div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <h3 data-i18n="trade.bulkProcurement">Bulk Procurement</h3>
+                        <form class="procurement-form" onsubmit="handleProcurementOrder(event)">
+                            <div class="input-group">
+                                <i class="fas fa-leaf input-icon"></i>
+                                <select name="crop" id="buyCrop" required class="floating-input" placeholder=" ">
+                                    <option value="" disabled selected></option>
+                                    <optgroup label="Cereals">
+                                        <option value="rice-basmati">🌾 Rice - Basmati</option>
+                                        <option value="rice-non-basmati">🌾 Rice - Non-Basmati</option>
+                                        <option value="wheat">🌾 Wheat</option>
+                                        <option value="maize">🌽 Maize</option>
+                                        <option value="bajra">🌾 Bajra</option>
+                                    </optgroup>
+                                    <optgroup label="Pulses">
+                                        <option value="chana">🥘 Chana (Bengal Gram)</option>
+                                        <option value="toor">🥘 Toor (Arhar)</option>
+                                        <option value="moong">🥘 Moong (Green Gram)</option>
+                                        <option value="urad">🥘 Urad (Black Gram)</option>
+                                    </optgroup>
+                                    <optgroup label="Oilseeds">
+                                        <option value="soybean">🌱 Soybean</option>
+                                        <option value="mustard">🌼 Mustard</option>
+                                        <option value="groundnut">🥜 Groundnut</option>
+                                        <option value="sunflower">🌻 Sunflower</option>
+                                    </optgroup>
+                                    <optgroup label="Cash Crops">
+                                        <option value="cotton">🌿 Cotton</option>
+                                        <option value="sugarcane">🎋 Sugarcane</option>
+                                        <option value="jute">🧶 Jute</option>
+                                    </optgroup>
+                                    <optgroup label="Spices">
+                                        <option value="turmeric">🟡 Turmeric</option>
+                                        <option value="chilli">🌶️ Chilli</option>
+                                        <option value="cumin">🧂 Cumin</option>
+                                    </optgroup>
+                                </select>
+                                <label for="buyCrop" class="floating-label">Select Crop</label>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="input-group">
+                                    <i class="fas fa-weight-hanging input-icon"></i>
+                                    <input type="number" name="quantity" id="buyQuantity" class="floating-input"
+                                        placeholder=" " required>
+                                    <label for="buyQuantity" class="floating-label"
+                                        data-i18n="trade.reqQuantity">Required Quantity</label>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-rupee-sign input-icon"></i>
+                                    <input type="number" name="maxPrice" id="buyPrice" class="floating-input"
+                                        placeholder=" " required>
+                                    <label for="buyPrice" class="floating-label" data-i18n="trade.maxPrice">Max
+                                        Price</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <i class="fas fa-map-marker-alt input-icon"></i>
+                                <input type="text" name="pincode" id="buyPincode" class="floating-input" placeholder=" "
+                                    pattern="[0-9]{6}" title="6 digit pincode" required>
+                                <label for="buyPincode" class="floating-label" data-i18n="trade.destPincode">Destination
+                                    Pincode</label>
+                            </div>
+
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-shopping-cart"></i> <span data-i18n="trade.btnCreateOrder">Create
+                                    Bulk Order</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced trade page animations
+        // Enhanced trade page animations
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check user role and auto-open dashboard
+            const userRole = localStorage.getItem('userRole') || sessionStorage.getItem('userRole');
+            console.log('User role from storage:', userRole);
+
+            if (userRole === 'farmer') {
+                showDashboard('farmer');
+                document.getElementById('dashboardSelector').style.display = 'none';
+                // Hide close button so they can't go back
+                document.querySelector('#farmerDashboard .close-btn').style.display = 'none';
+            } else if (userRole === 'buyer') {
+                showDashboard('buyer');
+                document.getElementById('dashboardSelector').style.display = 'none';
+                // Hide close button so they can't go back
+                document.querySelector('#buyerDashboard .close-btn').style.display = 'none';
+            }
+
+            // Add subtle parallax effect to floating elements
+            const floatingElements = document.querySelectorAll('.floating-leaf');
+
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                floatingElements.forEach((element, index) => {
+                    const speed = 0.5 + (index * 0.1);
+                    element.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+                });
+            });
+
+            // Add hover effects to dashboard cards
+            const dashboardCards = document.querySelectorAll('.dashboard-card');
+            dashboardCards.forEach(card => {
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Initialize Available Crops (Mock Data)
+        const availableCrops = [
+            // Cereals
+            { type: 'rice', name: 'Basmati Rice (Pusa-1121)', quantity: 50, price: 4250, location: 'Punjab', verified: true },
+            { type: 'wheat', name: 'Sharbati Wheat', quantity: 100, price: 3400, location: 'MP', verified: true },
+            { type: 'maize', name: 'Yellow Maize (Feed)', quantity: 200, price: 2100, location: 'Bihar', verified: false },
+            { type: 'bajra', name: 'Hybrid Bajra', quantity: 80, price: 2350, location: 'Rajasthan', verified: true },
+
+            // Cash Crops
+            { type: 'cotton', name: 'Bt Cotton Bale', quantity: 200, price: 6950, location: 'Gujarat', verified: false },
+            { type: 'sugarcane', name: 'Co-0238 Sugarcane', quantity: 500, price: 370, location: 'UP', verified: false },
+            { type: 'jute', name: 'Raw Jute (TD-5)', quantity: 60, price: 5200, location: 'West Bengal', verified: true },
+
+            // Spices
+            { type: 'turmeric', name: 'Waigaon Turmeric', quantity: 25, price: 9200, location: 'Maharashtra', verified: true },
+            { type: 'chilli', name: 'Kashmiri Chilli', quantity: 10, price: 24000, location: 'J&K', verified: true },
+            { type: 'cumin', name: 'Cumin (Jeera) Grade-A', quantity: 15, price: 28500, location: 'Gujarat', verified: true },
+            { type: 'cardamom', name: 'Green Cardamom (8mm)', quantity: 2, price: 180000, location: 'Kerala', verified: true },
+            { type: 'pepper', name: 'Black Pepper (Malabar)', quantity: 5, price: 48000, location: 'Kerala', verified: true },
+
+            // Pulses
+            { type: 'chana', name: 'Desi Chana', quantity: 80, price: 5400, location: 'Rajasthan', verified: false },
+            { type: 'chana', name: 'Kabuli Chana (Dollar)', quantity: 40, price: 9500, location: 'MP', verified: true },
+            { type: 'moong', name: 'Green Moong (Polished)', quantity: 30, price: 7800, location: 'Maharashtra', verified: true },
+            { type: 'toor', name: 'Toor Dal (Arhar)', quantity: 60, price: 8900, location: 'Karnataka', verified: true },
+
+            // Oilseeds
+            { type: 'soybean', name: 'JS-335 Soybean', quantity: 150, price: 4600, location: 'MP', verified: true },
+            { type: 'mustard', name: 'Pusa Bold Mustard', quantity: 60, price: 5650, location: 'Haryana', verified: true },
+            { type: 'groundnut', name: 'Groundnut (Java)', quantity: 90, price: 6200, location: 'Gujarat', verified: false },
+            { type: 'sunflower', name: 'Sunflower Seeds', quantity: 45, price: 4800, location: 'Karnataka', verified: true },
+
+            // Fruits/Plantation
+            { type: 'cashew', name: 'Raw Cashew Nuts', quantity: 10, price: 11500, location: 'Goa', verified: true },
+            { type: 'coconut', name: 'Milling Copra', quantity: 100, price: 9800, location: 'Kerala', verified: false }
+        ];
+
+        function displayAvailableCrops() {
+            const container = document.getElementById('availableCrops');
+            container.innerHTML = '';
+
+            availableCrops.forEach(crop => {
+                const card = document.createElement('div');
+                card.className = `market-card ${crop.type}`;
+                card.innerHTML = `
+                    <h4>
+                        ${crop.name} 
+                        ${crop.verified ? '<span class="market-badge"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
+                    </h4>
+                    <div class="market-price">₹${crop.price}/q</div>
+                    <div class="market-details">
+                        <i class="fas fa-map-marker-alt"></i> ${crop.location}<br>
+                        <i class="fas fa-cubes"></i> ${crop.quantity} Quintals Available
+                    </div>
+                    <button class="market-action">Use Smart Trade</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Call this when buyer dashboard opens
+        displayAvailableCrops();    // Crop Varieties Data
+        const cropVarieties = {
+            // Cereals
+            'rice-basmati': [
+                'Pusa-1121 (Extra Long)',
+                'Pusa-1509 (Early Maturing)',
+                'Pusa-1401 (Aromatic)',
+                'Pusa-1718 (Blight Resistant)',
+                'Traditional Basmati (Taraori/Dehraduni)',
+                'CSR-30 (Salt Tolerant)'
+            ],
+            'rice-non-basmati': [
+                'Sona Masoori (BPT-5204)',
+                'IR-64 (Long Grain)',
+                'Swarna (MTU-7029)',
+                'PR-126 (Short Duration)',
+                'Sambha Mahsuri (BPT-5204)',
+                'Govind Bhog (Aromatic)',
+                'Wada Kolam (Premium)',
+                'Johha Rice (Assam Aromatic)',
+                'Black Rice (Chak-Hao)'
+            ],
+            'wheat': [
+                'Sharbati (Premium MP)',
+                'Lokwan (Maharashtra)',
+                'C-306 (Dryland)',
+                'HD-2967 (High Yield)',
+                'PBW-343 (Punjab)',
+                'WH-147',
+                'Khapli (Emmer Wheat)'
+            ],
+            'maize': [
+                'Dent Corn (Feed/Industrial)',
+                'Flint Corn (Human Consumption)',
+                'Sweet Corn (Sugar-75)',
+                'Baby Corn (HM-4)',
+                'Popcorn (Amber)',
+                'High Quality Protein Maize (HQPM-1)'
+            ],
+            'bajra': ['Hybrid (HHB-67)', 'Desi (Local)', 'ICTP-8203 (Fe-Rich)'],
+
+            // Pulses
+            'chana': [
+                'Desi Chana (Small Brown)',
+                'Kabuli Chana (Dollar/White)',
+                'Gulabi Chana (Pink)',
+                'JG-11 (Wilt Resistant)',
+                'Jaki-9218'
+            ],
+            'toor': [
+                'Maruti (ICP-8863)',
+                'Asha (ICPL-87119)',
+                'BSMR-736 (Red Gram)',
+                'Pusa-992 (Short Duration)'
+            ],
+            'moong': [
+                'PDM-139 (Samrat)',
+                'Pusa Baisakhi',
+                'SML-668 (Summer Moong)',
+                'Shikha (K-851)'
+            ],
+            'urad': [
+                'Pant U-31',
+                'T-9 (Black Gram)',
+                'LBG-752',
+                'Vamban-8'
+            ],
+
+            // Oilseeds
+            'soybean': [
+                'JS-335 (Most Popular)',
+                'JS-9560 (Early Maturing)',
+                'NRC-37 (Ahilya-4)',
+                'KDS-726 (Phule Sangam)'
+            ],
+            'mustard': [
+                'Pusa Bold',
+                'Varuna (T-59)',
+                'Rohini',
+                'Pusa Mustard-25 (NPJ-112)',
+                'Kranti'
+            ],
+            'groundnut': [
+                'JL-24 (Phule Pragati)',
+                'TAG-24 (Spanish Bunch)',
+                'GG-20 (Gujarat)',
+                'Kadiri-6 (K-6)'
+            ],
+            'sunflower': ['Modern', 'Morden', 'KBSH-44', 'DRSH-1'],
+
+            // Cash Crops
+            'cotton': [
+                'Bt Cotton (Bollgard II)',
+                'Desi Cotton (Arboreum)',
+                'American Cotton (Hirsutum)',
+                'Egyptian Cotton (Giza)',
+                'Organic Cotton'
+            ],
+            'sugarcane': [
+                'Co-0238 (High Yield)',
+                'Co-86032 (Nira)',
+                'Co-99004 (Damodar)',
+                'Red Cane'
+            ],
+            'jute': ['Tossa (Corchorus Olitorius)', 'White Jute (Capsularis)'],
+
+            // Spices
+            'turmeric': [
+                'Waigaon (High Curcumin)',
+                'Salem (Premium)',
+                'Erode (Local)',
+                'Nizamabad Bulb',
+                'Lakadong (Highest Curcumin)'
+            ],
+            'chilli': [
+                'Guntur Sannam (S4)',
+                'Byadgi (Color)',
+                'Kashmiri (Low Pungency)',
+                'Teja (High Pungency)',
+                'Bhoot Jolokia (Ghost Pepper)'
+            ],
+            'cumin': ['GC-4 (Gujarat Cumin)', 'RZ-19 (Rajasthan Cumin)', 'RZ-209']
+        };
+
+        function updateCropVarieties(selectElement) {
+            console.log('Updating varieties for:', selectElement.value);
+            const varietySelect = document.getElementById('cropVarietySelect');
+            const selectedCrop = selectElement.value;
+
+            // Clear existing options except default
+            varietySelect.innerHTML = '<option value="">Select Variety</option>';
+
+            if (selectedCrop && cropVarieties[selectedCrop]) {
+                cropVarieties[selectedCrop].forEach(variety => {
+                    const option = document.createElement('option');
+                    option.value = variety.toLowerCase().replace(/\s+/g, '-');
+                    option.textContent = variety;
+                    varietySelect.appendChild(option);
+                });
+            }
+
+            // Always add 'Other' option
+            const otherOption = document.createElement('option');
+            otherOption.value = 'other';
+            otherOption.textContent = 'Other';
+            varietySelect.appendChild(otherOption);
+        }
+
+        // Trade page functionality
+        function showDashboard(type) {
+            const farmerDashboard = document.getElementById('farmerDashboard');
+            const buyerDashboard = document.getElementById('buyerDashboard');
+
+            if (type === 'farmer') {
+                farmerDashboard.classList.remove('hidden');
+                buyerDashboard.classList.add('hidden');
+            } else if (type === 'buyer') {
+                buyerDashboard.classList.remove('hidden');
+                farmerDashboard.classList.add('hidden');
+            }
+        }
+
+        function closeDashboard() {
+            document.getElementById('farmerDashboard').classList.add('hidden');
+            document.getElementById('buyerDashboard').classList.add('hidden');
+            document.getElementById('dashboardSelector').style.display = 'flex';
+        }
+
+        function submitCropListing(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const cropType = formData.get('cropType');
+            const quantity = formData.get('quantity');
+            const variety = formData.get('cropVariety');
+
+            showNotification(`${cropType} (${variety}) - ${quantity} quintals listed successfully!`, 'success');
+            event.target.reset();
+        }
+
+        function handleProcurementOrder(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const crop = formData.get('crop');
+            const quantity = formData.get('quantity');
+
+            showNotification(`Bulk order for ${crop} (${quantity} quintals) created!`, 'success');
+            event.target.reset();
+        }
+
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 5px;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="script.js"></script>
+    <script src="profile-widget.js"></script>
+
+</body>
+
+</html>

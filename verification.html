@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification & Trust - Farm2Market</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="profile-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="profile-page-body">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                Farm2Market
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html" data-i18n="nav.analytics">Analytics</a></li>
+                <li><a href="verification.html" class="active" data-i18n="nav.verification">Verification</a></li>
+                <li id="navProfile" style="display:none;"><a href="profile.html" data-i18n="nav.profile">My Profile</a>
+                </li>
+                <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> <span
+                            data-i18n="nav.login">Login</span> <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> <span
+                                data-i18n="nav.login">Login</span></a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> <span
+                                data-i18n="nav.register">Register</span></a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li class="nav-language-selector">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <!-- Sidebar (Same as Profile Page) -->
+        <aside class="profile-sidebar">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <img id="profileImage" src="farm2market.jpeg" alt="Profile Photo">
+                </div>
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileRole">Loading...</p>
+
+                <div class="profile-actions">
+                    <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> <span
+                            data-i18n="nav.logout">Logout</span></button>
+                </div>
+            </div>
+
+            <div class="sidebar-menu">
+                <a href="profile.html"><i class="fas fa-user-cog"></i> <span data-i18n="nav.profile">Settings</span></a>
+                <a href="verification.html" class="active"><i class="fas fa-shield-alt"></i> <span
+                        data-i18n="nav.verification">Verification</span></a>
+                <a href="trade.html"><i class="fas fa-exchange-alt"></i> <span data-i18n="nav.trade">My
+                        Trades</span></a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="profile-main">
+            <!-- Verification Status Banner -->
+            <div id="verificationSection">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Forms Section (Adapted for Profile Layout) -->
+            <div class="profile-section">
+                <div class="section-header">
+                    <h3><i class="fas fa-shield-alt"></i> Complete Your Verification</h3>
+                </div>
+
+                <!-- Farmer Verification Form -->
+                <div id="farmer-tab" style="display: none;">
+                    <div class="form-header-section" style="margin-bottom: 2rem;">
+                        <div class="form-title-card"
+                            style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #4CAF50;">
+                            <h4 data-i18n="verification.farmer.title" style="margin: 0; color: #2E7D32;">Farmer
+                                Verification</h4>
+                            <p data-i18n="verification.farmer.desc" style="margin: 0.5rem 0 0; color: #666;">Complete
+                                your farmer profile verification to access all trading features</p>
+                        </div>
+                    </div>
+
+                    <form class="verification-form profile-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label data-i18n="verification.form.fullName">Full Name</label>
+                                <input type="text" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="verification.form.mobile">Mobile Number</label>
+                                <input type="tel" placeholder="Enter mobile number" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="verification.form.aadhar">Aadhar Number</label>
+                                <input type="text" placeholder="Enter 12-digit Aadhar number" maxlength="12" required>
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="verification.form.state">State</label>
+                                <select required>
+                                    <option value="">Select State</option>
+                                    <option value="andhra-pradesh">Andhra Pradesh</option>
+                                    <option value="punjab">Punjab</option>
+                                    <option value="maharashtra">Maharashtra</option>
+                                    <option value="madhya-pradesh">Madhya Pradesh</option>
+                                    <option value="uttar-pradesh">Uttar Pradesh</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>District</label>
+                                <input type="text" placeholder="Enter District" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Village/Town</label>
+                                <input type="text" placeholder="Enter village or town name" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save">
+                                <i class="fas fa-check-circle"></i> Submit for Verification
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Buyer Verification Form -->
+                <div id="buyer-tab" style="display: none;">
+                    <div class="form-header-section" style="margin-bottom: 2rem;">
+                        <div class="form-title-card"
+                            style="background: #f9f9f9; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #2196F3;">
+                            <h4 data-i18n="verification.buyer.title" style="margin: 0; color: #1565C0;">Buyer
+                                Verification</h4>
+                            <p data-i18n="verification.buyer.desc" style="margin: 0.5rem 0 0; color: #666;">Complete
+                                your business verification to start purchasing</p>
+                        </div>
+                    </div>
+
+                    <form class="verification-form profile-form">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Business Name</label>
+                                <input type="text" placeholder="Enter full name or business name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mobile Number</label>
+                                <input type="tel" placeholder="Enter mobile number" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Buyer Type</label>
+                                <select required>
+                                    <option value="">Select Buyer Type</option>
+                                    <option value="individual">Individual Buyer</option>
+                                    <option value="retailer">Retailer</option>
+                                    <option value="wholesaler">Wholesaler</option>
+                                    <option value="processor">Food Processor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>GST Number</label>
+                                <input type="text" placeholder="Enter GST Number" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-save"
+                                style="background: linear-gradient(135deg, #1565C0 0%, #0D47A1 100%);">
+                                <i class="fas fa-check-circle"></i> Submit for Verification
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Security Features (Compact) -->
+            <div class="security-features-section" style="margin-top: 0; padding: 0;">
+                <div class="security-grid" style="grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+                    <div class="security-card"
+                        style="padding: 1.5rem; text-align: left; display: flex; align-items: center; gap: 1rem;">
+                        <div class="security-icon" style="margin: 0; font-size: 1.5rem;"><i class="fas fa-lock"></i>
+                        </div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 1rem;">Blockchain Secured</h4>
+                            <p style="margin: 0; font-size: 0.8rem;">Flashchain technology</p>
+                        </div>
+                    </div>
+                    <div class="security-card"
+                        style="padding: 1.5rem; text-align: left; display: flex; align-items: center; gap: 1rem;">
+                        <div class="security-icon" style="margin: 0; font-size: 1.5rem;"><i
+                                class="fas fa-certificate"></i></div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 1rem;">Government Verified</h4>
+                            <p style="margin: 0; font-size: 0.8rem;">Institution authorized</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market"
+                    style="height: 30px; vertical-align: middle; margin-right: 0.5rem;">
+                <strong>Farm2Market</strong>
+            </div>
+            <div class="footer-links">
+                <div class="link-col">
+                    <h4 data-i18n="home.quickLinks">Quick Links</h4>
+                    <a href="index.html" data-i18n="nav.home">Home</a>
+                    <a href="trade.html" data-i18n="nav.trade">Trade</a>
+                    <a href="analytics.html" data-i18n="nav.analytics">Analytics</a>
+                </div>
+                <div class="link-col">
+                    <h4 data-i18n="home.support">Support</h4>
+                    <a href="#" data-i18n="home.privacyPolicy">Privacy Policy</a>
+                    <a href="#" data-i18n="home.helpCenter">Help Center</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Farm2Market. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="script.js"></script>
+    <script src="document-uploader.js"></script>
+
+    <script>
+        // Profile Data Loading
+        function loadProfileData() {
+            const userProfileStr = localStorage.getItem('userProfile') || sessionStorage.getItem('userProfile');
+            let userProfile = JSON.parse(userProfileStr || '{}');
+
+            if (!userProfile.name && localStorage.getItem('farm2market_users')) {
+                const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+                const email = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+                const foundUser = users.find(u => u.email === email);
+                if (foundUser) userProfile = foundUser;
+            }
+
+            const userRole = localStorage.getItem('userRole') || 'farmer';
+            const defaults = {
+                name: 'Guest User',
+                role: userRole
+            };
+
+            const finalProfile = {
+                name: userProfile.name || defaults.name
+            };
+
+            document.getElementById('profileName').textContent = finalProfile.name;
+            const verificationStatus = localStorage.getItem('verificationStatus');
+            const statusText = verificationStatus === 'verified' ? 'Verified' : 'Unverified';
+            document.getElementById('profileRole').textContent = `${statusText} ${userRole.charAt(0).toUpperCase() + userRole.slice(1)}`;
+        }
+
+        function loadProfilePhoto() {
+            const savedPhoto = localStorage.getItem('profilePhoto');
+            if (savedPhoto) {
+                document.getElementById('profileImage').src = savedPhoto;
+            }
+        }
+
+        // Handle Form Submission
+        function handleVerificationSubmit(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // In a real app, we would validate inputs here
+            // For now, we assume HTML5 'required' attribute handles basic validation
+
+            // Redirect to processing page
+            window.location.href = 'verification-processing.html';
+        }
+
+        // Attach event listeners to forms
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load Profile Data for Sidebar
+            loadProfileData();
+            loadProfilePhoto();
+
+            // Role checking logic
+            const userRole = localStorage.getItem('userRole') || sessionStorage.getItem('userRole');
+            const farmerTab = document.getElementById('farmer-tab');
+            const buyerTab = document.getElementById('buyer-tab');
+
+            // Hide both forms initially
+            farmerTab.style.display = 'none';
+            buyerTab.style.display = 'none';
+
+            if (userRole === 'farmer') {
+                farmerTab.style.display = 'block';
+                farmerTab.classList.add('active');
+                buyerTab.classList.remove('active');
+
+                // key: find the form inside the active tab
+                const farmerForm = farmerTab.querySelector('form');
+                if (farmerForm) {
+                    farmerForm.addEventListener('submit', handleVerificationSubmit);
+                }
+
+            } else if (userRole === 'buyer') {
+                buyerTab.style.display = 'block';
+                buyerTab.classList.add('active');
+                farmerTab.classList.remove('active');
+
+                const buyerForm = buyerTab.querySelector('form');
+                if (buyerForm) {
+                    buyerForm.addEventListener('submit', handleVerificationSubmit);
+                }
+            } else {
+                // If no user is logged in, redirect to login
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+
+</html>

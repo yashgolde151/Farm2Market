@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Farm2Market</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="auth-body">
+    <!-- Back/Exit button for logged-in users -->
+    <div id="backButton" style="position: absolute; top: 20px; left: 20px; z-index: 1000; display: none;">
+        <button onclick="goBack()"
+            style="background: #fff; border: 2px solid #ddd; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <i class="fas fa-times" style="color: #666;"></i>
+        </button>
+    </div>
+
+    <div class="auth-language-selector">
+        <select onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="gu">ગુજરાતી</option>
+            <option value="mr">मराठी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="ml">മലയാളം</option>
+        </select>
+    </div>
+    <div class="auth-container">
+        <div class="auth-card register-card">
+            <div class="auth-header">
+                <button class="close-btn" onclick="goToHome()" title="Go back to home">
+                    <i class="fas fa-times"></i>
+                </button>
+                <i class="fas fa-user-plus logo-icon"></i>
+                <h2 data-i18n="auth.createAccount">Create Account</h2>
+                <p data-i18n="auth.joinSubtitle">Join India's First Agri Stock Market</p>
+            </div>
+
+            <!-- User Type Selection with Checkboxes -->
+            <div style="margin-bottom: 2rem;">
+                <label style="display: block; font-weight: 600; color: #333; margin-bottom: 1rem; font-size: 0.95rem;">
+                    <i class="fas fa-question-circle" style="color: #2E7D32; margin-right: 0.5rem;"></i>
+                    Who are you? <span style="color: #d32f2f;">*</span>
+                </label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <!-- Farmer Checkbox -->
+                    <div class="user-type-checkbox-card" id="farmerCard" onclick="selectUserType('farmer')">
+                        <input type="checkbox" id="isFarmer" name="userRole" value="farmer">
+                        <label for="isFarmer"
+                            style="cursor: pointer; margin: 0; display: flex; align-items: center; height: 100%; font-size: 0.95rem;">
+                            <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                                <i class="fas fa-tractor"
+                                    style="font-size: 2rem; color: #4CAF50; margin-bottom: 0.5rem;"></i>
+                                <span style="font-weight: 600; color: #2E7D32;">Farmer</span>
+                                <span style="font-size: 0.8rem; color: #666; margin-top: 0.3rem;">Sell your crops</span>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Buyer Checkbox -->
+                    <div class="user-type-checkbox-card" id="buyerCard" onclick="selectUserType('buyer')">
+                        <input type="checkbox" id="isBuyer" name="userRole" value="buyer">
+                        <label for="isBuyer"
+                            style="cursor: pointer; margin: 0; display: flex; align-items: center; height: 100%; font-size: 0.95rem;">
+                            <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                                <i class="fas fa-shopping-bag"
+                                    style="font-size: 2rem; color: #2196F3; margin-bottom: 0.5rem;"></i>
+                                <span style="font-weight: 600; color: #1976D2;">Buyer</span>
+                                <span style="font-size: 0.8rem; color: #666; margin-top: 0.3rem;">Buy fresh
+                                    produce</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div id="userTypeError" style="color: #d32f2f; font-size: 0.85rem; margin-top: 0.5rem; display: none;">
+                    <i class="fas fa-exclamation-circle"></i> Please select your role
+                </div>
+            </div>
+
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="fullName" data-i18n="auth.fullName">Full Name</label>
+                    <input type="text" id="fullName" placeholder="Enter your full name"
+                        data-i18n="auth.fullNamePlaceholder" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobile" data-i18n="auth.mobile">Mobile Number</label>
+                    <input type="tel" id="mobile" placeholder="10-digit mobile number"
+                        data-i18n="auth.mobilePlaceholder" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" data-i18n="auth.email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" data-i18n="auth.emailPlaceholder"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordReg" data-i18n="auth.passwordReg">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="passwordReg" placeholder="Strong 8+ character password"
+                            data-i18n="auth.passwordRegPlaceholder" minlength="8" required>
+                        <button type="button" onclick="togglePasswordReg()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
+                            <i id="passwordRegToggle" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-block" data-i18n="auth.registerBtn">Register</button>
+            </form>
+
+            <div class="auth-footer">
+                <p><span data-i18n="auth.alreadyAccount">Already have an account?</span> <a href="login.html"
+                        data-i18n="auth.loginHere">Login here</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Check if user is already logged in and show back button
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLoggedIn = localStorage.getItem('userRole');
+            if (isLoggedIn) {
+                document.getElementById('backButton').style.display = 'block';
+            }
+        });
+
+        function goBack() {
+            // Go back to previous page without logging out
+            if (document.referrer) {
+                window.location.href = document.referrer;
+            } else {
+                window.location.href = 'index.html';
+            }
+        }
+
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        function togglePasswordReg() {
+            const passwordField = document.getElementById('passwordReg');
+            const toggleIcon = document.getElementById('passwordRegToggle');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.className = 'fas fa-eye';
+            }
+        }
+    </script>
+</body>
+
+</html>

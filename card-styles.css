@@ -1,0 +1,108 @@
+/* Global Background Enhancement */
+body {
+    background-color: #f1f8e9;
+    /* Light Green Base */
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232e7d32' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Price Cards Container */
+.price-cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+/* Base Price Card Style */
+.price-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 1.5rem 2.5rem;
+    min-width: 180px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.price-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+}
+
+.price-card h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.price-card .price {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.2rem;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.price-card .change {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+/* Specific Crop Themes */
+
+/* Wheat - Golden */
+.price-card.wheat {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 160, 0, 0.4) 100%);
+    border-color: rgba(255, 215, 0, 0.3);
+}
+
+.price-card.wheat h3 {
+    color: #fffde7;
+}
+
+.price-card.wheat .change {
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+/* Rice - Pearl/White */
+.price-card.rice {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(224, 247, 250, 0.4) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.price-card.rice h3 {
+    color: #e0f7fa;
+}
+
+.price-card.rice .change {
+    background: rgba(0, 100, 0, 0.2);
+    color: #fff;
+}
+
+/* Cotton - Soft Blue */
+.price-card.cotton {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.3) 0%, rgba(3, 169, 244, 0.4) 100%);
+    border-color: rgba(33, 150, 243, 0.3);
+}
+
+.price-card.cotton h3 {
+    color: #e1f5fe;
+}
+
+.price-card.cotton .change {
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+}

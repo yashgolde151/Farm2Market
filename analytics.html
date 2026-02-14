@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm2Market - Analytics</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="analytics-body">
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                Farm2Market
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html" class="active" data-i18n="nav.analytics">Analytics</a></li>
+                <li id="navProfile" style="display:none;"><a href="profile.html" data-i18n="nav.profile">My Profile</a>
+                </li>
+                <li><a href="about.html" data-i18n="nav.about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> <span
+                            data-i18n="nav.login">Login</span> <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> <span
+                                data-i18n="nav.login">Login</span></a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> <span
+                                data-i18n="nav.register">Register</span></a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li class="nav-language-selector">
+                    <select onchange="changeLanguage(this.value)">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="gu">ગુજરાતી</option>
+                        <option value="mr">मराठी</option>
+                        <option value="ta">தமிழ்</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="kn">ಕನ್ನಡ</option>
+                        <option value="ml">മലയാളം</option>
+                    </select>
+                </li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="analytics-main">
+
+        <!-- Hero Header -->
+        <div class="hero-header enhanced-analytics-header">
+            <div class="hero-background-overlay"></div>
+            <div class="hero-content">
+                <div class="header-icon-section">
+                    <div class="main-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="floating-icons">
+                        <div class="float-icon"><i class="fas fa-chart-pie"></i></div>
+                        <div class="float-icon"><i class="fas fa-analytics"></i></div>
+                        <div class="float-icon"><i class="fas fa-trending-up"></i></div>
+                    </div>
+                </div>
+                <div class="header-text-section">
+                    <h1 data-i18n="analytics.title">Market Intelligence Hub</h1>
+                    <p data-i18n="analytics.subtitle" style="color: #D4AF37; font-weight: 600;">Advanced insights, yield
+                        predictions, and profitability
+                        calculators for the modern farmer</p>
+                    <div class="header-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">15K+</span>
+                            <span class="stat-label">Active Users</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">98%</span>
+                            <span class="stat-label">Accuracy</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Live Data</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h2>₹2450 <span class="trend-indicator up">↑</span></h2>
+                    <p data-i18n="analytics.avgProfit">Avg Profit per Acre</p>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h2>+12%</h2>
+                    <p data-i18n="analytics.demandSurge">Demand Surge</p>
+                </div>
+                <div class="metric-icon"><i class="fas fa-chart-bar"></i></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h2>High</h2>
+                    <p data-i18n="analytics.volatility">Market Volatility</p>
+                </div>
+                <div class="metric-icon"><i class="fas fa-bolt"></i></div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-info">
+                    <h2>15.2k</h2>
+                    <p data-i18n="analytics.activeBuyers">Active Buyers</p>
+                </div>
+                <div class="metric-icon"><i class="fas fa-shopping-bag"></i></div>
+            </div>
+        </div>
+
+        <!-- Upper Layout: Trend & Demand Grid -->
+        <div class="dashboard-grid-upper">
+            <!-- Price Trend Analysis -->
+            <div class="card card-wide">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box"><i class="fas fa-chart-line"></i></div>
+                        <h3 data-i18n="analytics.priceTrend">Price Trend Analysis</h3>
+                    </div>
+                    <div class="header-action">
+                        <select class="modern-select">
+                            <option>Wheat</option>
+                            <option>Rice</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="chart-container-large">
+                    <canvas id="trendChart"></canvas>
+                    <div class="current-price-badge">
+                        ₹2,450
+                        <span>do 21</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demand of Crop Grid -->
+            <div class="card card-narrow">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box"><i class="fas fa-fire"></i></div>
+                        <h3 data-i18n="analytics.demandHeatmap">Crop Demand Heatmap</h3>
+                    </div>
+                    <div class="header-action">
+                        <select class="modern-select" id="demandRegionSelect">
+                            <option value="all">All Regions</option>
+                            <option value="north">North India</option>
+                            <option value="south">South India</option>
+                            <option value="west">West India</option>
+                            <option value="east">East India</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="demand-stats-row">
+                    <div class="demand-stat">
+                        <span class="stat-number">85%</span>
+                        <span class="stat-label">High Demand</span>
+                    </div>
+                    <div class="demand-stat">
+                        <span class="stat-number">₹2.4K</span>
+                        <span class="stat-label">Avg Price</span>
+                    </div>
+                </div>
+                <div class="demand-grid-numbers" id="demandGrid">
+                    <!-- Populated by JS -->
+                </div>
+                <div class="demand-legend">
+                    <span><span class="dot red"></span> Very High (90%+)</span>
+                    <span><span class="dot orange"></span> High (70-89%)</span>
+                    <span><span class="dot green"></span> Medium (50-69%)</span>
+                    <span><span class="dot yellow"></span> Low (<50%)< /span>
+                </div>
+                <div class="demand-insights">
+                    <div class="insight-item">
+                        <i class="fas fa-trending-up"></i>
+                        <span>Wheat demand up 15% this week</span>
+                    </div>
+                    <div class="insight-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Highest demand in Punjab region</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Layout: Calculators -->
+        <div class="dashboard-grid-middle">
+            <!-- ROI Calculator -->
+            <div class="card premium-calculator-card" id="roi-calculator-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box"><i class="fas fa-calculator"></i></div>
+                        <h3 data-i18n="analytics.roiCalc">ROI Calculator</h3>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Crop Type</label>
+                    <select class="modern-select-full" id="roiCropSelect">
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="soybean">Soybean</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="analytics.totalInvestment">Total Investment (₹)</label>
+                    <input type="number" class="modern-input" id="totalInvestment" value="40000" min="1000">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="analytics.expectedYield">Expected Yield (Quintals)</label>
+                    <input type="number" class="modern-input" id="expectedYield" value="15" min="1" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="analytics.currentMarketPrice">Current Market Price (₹/Quintal)</label>
+                    <input type="number" class="modern-input" id="marketPrice" value="2350" min="100">
+                </div>
+                <button class="btn-primary-full" onclick="calculateROI()" data-i18n="analytics.btnCalcRoi">Calculate
+                    Profit & ROI</button>
+                <div class="result-display-box" id="roiResult" style="display: none;">
+                    <div class="result-main" id="roiProfit">₹0 <span>Profit</span></div>
+                    <div class="result-sub" id="roiPercentage">• ROI: 0%</div>
+                    <div class="result-sub" id="roiBreakeven">• Breakeven: ₹0/Qt</div>
+                </div>
+            </div>
+
+            <!-- Yield Predictor -->
+            <div class="card premium-calculator-card" id="yield-predictor-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box"><i class="fas fa-leaf"></i></div>
+                        <h3 data-i18n="analytics.yieldPredictor">AI Yield Predictor</h3>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Crop Type</label>
+                    <select class="modern-select-full" id="yieldCropSelect">
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="soybean">Soybean</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="analytics.farmSize">Farm Size (Acres)</label>
+                    <input type="number" class="modern-input" id="farmSize" value="5" min="0.1" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label><span data-i18n="analytics.soilQuality">Soil Quality</span>: <span class="text-green"
+                            id="soilQuality">Good (75%)</span></label>
+                    <div class="slider-container">
+                        <input type="range" class="modern-slider" id="soilSlider" min="20" max="100" value="75">
+                        <div class="slider-value" id="soilValue">75%</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><span data-i18n="analytics.rainfall">Expected Rainfall</span>: <span id="rainfallLabel">110
+                            mm</span></label>
+                    <div class="slider-container">
+                        <input type="range" class="modern-slider" id="rainfallSlider" min="50" max="200" value="110">
+                        <div class="slider-value" id="rainfallValue">110 mm</div>
+                    </div>
+                </div>
+                <button class="btn-primary-full" onclick="predictYield()" data-i18n="analytics.btnPredict">Predict
+                    Yield</button>
+                <div class="result-display-green" id="yieldResult" style="display: none;">
+                    <h2 id="yieldAmount">0 <span>Quintals</span></h2>
+                    <div class="result-sub" id="yieldConfidence">Confidence: 0%</div>
+                </div>
+            </div>
+
+            <!-- What If I Wait Simulator -->
+            <div class="card premium-calculator-card" id="wait-simulator-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box"><i class="fas fa-hourglass-half"></i></div>
+                        <h3 data-i18n="analytics.waitSim">"What If I Wait?" Simulator</h3>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Commodity</label>
+                    <select class="modern-select-full" id="waitCropSelect">
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="soybean">Soybean</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Current Price (₹/Qt)</label>
+                    <input type="number" class="modern-input" id="currentPrice" value="2450" readonly>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="analytics.waitDuration">Wait Duration</label>
+                    <select class="modern-select-full" id="waitDuration">
+                        <option value="1">1 Week</option>
+                        <option value="2">2 Weeks</option>
+                        <option value="4">1 Month</option>
+                        <option value="12">3 Months</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label data-i18n="trade.quantity">Quantity (Quintals)</label>
+                    <input type="number" class="modern-input" id="waitQuantity" value="10" min="1">
+                </div>
+                <button class="btn-orange-full" onclick="simulateWait()" data-i18n="analytics.btnSimulate">Simulate
+                    Price Outcome</button>
+                <div class="result-display-orange" id="waitResult" style="display: none;">
+                    <h2 id="predictedPrice">₹0 <span>Predicted Price</span></h2>
+                    <div class="result-sub" id="priceChange">Change: 0%</div>
+                    <div class="result-sub" id="potentialGain">Potential Impact: ₹0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Layout: Current Demand & History -->
+        <div class="dashboard-grid-bottom">
+            <!-- Current Market Demand -->
+            <div class="card card-narrow-bottom premium-chart-card" id="live-demand-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box pulse-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h3 data-i18n="analytics.liveDemand">Live Market Demand</h3>
+                    </div>
+                    <div class="header-action">
+                        <select class="modern-select" id="demandCropFilter">
+                            <option value="all">All Crops</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="soybean">Soybean</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="demand-metrics">
+                    <div class="metric-row">
+                        <span class="metric-label" data-i18n="analytics.totalOrders">Total Orders:</span>
+                        <span class="metric-value" id="totalOrders">1,247</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label" data-i18n="analytics.activeBuyers">Active Buyers:</span>
+                        <span class="metric-value" id="activeBuyers">342</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label" data-i18n="analytics.avgOrderSize">Avg. Order Size:</span>
+                        <span class="metric-value" id="avgOrderSize">15.2 Qt</span>
+                    </div>
+                </div>
+                <div class="bar-chart-container">
+                    <canvas id="marketDemandChart"></canvas>
+                </div>
+                <div class="demand-insights-list">
+                    <div class="insight-badge high">🔥 High demand in Punjab</div>
+                    <div class="insight-badge medium">📈 Rice orders up 23%</div>
+                    <div class="insight-badge low">⚡ Quick delivery needed</div>
+                </div>
+            </div>
+
+            <!-- Historical Replay -->
+            <div class="card card-wide-bottom premium-chart-card" id="historical-replay-card">
+                <div class="card-header">
+                    <div class="header-title">
+                        <div class="icon-box"><i class="fas fa-history"></i></div>
+                        <h3 data-i18n="analytics.historicalReplay">Historical Price Replay</h3>
+                    </div>
+                    <div class="header-controls">
+                        <div class="toggle-group">
+                            <button class="replay-btn" data-period="1W">1W</button>
+                            <button class="replay-btn active" data-period="1M">1M</button>
+                            <button class="replay-btn" data-period="3M">3M</button>
+                            <button class="replay-btn" data-period="1Y">1Y</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="replay-controls-row">
+                    <select class="modern-select-small" id="historicalCropSelect">
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="soybean">Soybean</option>
+                    </select>
+                    <div class="replay-info">
+                        <span class="replay-period" id="replayPeriod">Last 1 Month</span>
+                        <span class="replay-date" id="replayDate">Dec 2023</span>
+                    </div>
+                    <div class="replay-controls">
+                        <button class="control-btn" id="playBtn" onclick="toggleReplay()"><i
+                                class="fas fa-play"></i></button>
+                        <button class="control-btn" onclick="resetReplay()"><i class="fas fa-undo"></i></button>
+                        <button class="control-btn" onclick="exportData()"><i class="fas fa-download"></i></button>
+                    </div>
+                </div>
+                <div class="replay-chart-container">
+                    <canvas id="historicalChart"></canvas>
+                </div>
+                <div class="replay-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Period High:</span>
+                        <span class="stat-value" id="periodHigh">₹2,680</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Period Low:</span>
+                        <span class="stat-value" id="periodLow">₹2,120</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Volatility:</span>
+                        <span class="stat-value" id="volatility">12.4%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Trend:</span>
+                        <span class="stat-value trend-up" id="trendDirection">↗ Bullish</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="farm2market.jpeg" alt="Farm2Market"
+                    style="height: 30px; vertical-align: middle; margin-right: 0.5rem;">
+                <strong>Farm2Market</strong>
+            </div>
+            <div class="footer-links">
+                <div class="link-col">
+                    <h4 data-i18n="home.quickLinks">Quick Links</h4>
+                    <a href="index.html" data-i18n="nav.home">Home</a>
+                    <a href="trade.html" data-i18n="nav.trade">Trade</a>
+                    <a href="analytics.html" data-i18n="nav.analytics">Analytics</a>
+                </div>
+                <div class="link-col">
+                    <h4 data-i18n="home.support">Support</h4>
+                    <a href="#" data-i18n="home.privacyPolicy">Privacy Policy</a>
+                    <a href="#" data-i18n="home.helpCenter">Help Center</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Farm2Market. All rights reserved.
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="auth-guard.js"></script>
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="language-selector.js"></script>
+    <script src="yield-predictor.js"></script>
+    <script src="analytics-charts.js"></script>
+    <script src="script.js"></script>
+    <script src="profile-widget.js"></script>
+
+</body>
+
+</html>

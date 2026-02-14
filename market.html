@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Market - Farm2Market</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(20, 25, 35, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-green: #00d09c;
+            --accent-red: #ff4976;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a5b1;
+            --grid-bg: #131722;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #0b0e11;
+            overflow-x: hidden;
+        }
+
+        .stock-market-container {
+            position: relative;
+            min-height: 100vh;
+            padding-top: 80px;
+            background: url('background.png') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-primary);
+        }
+
+        /* Dark Overlay */
+        .stock-market-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(11, 14, 17, 0.9) 0%, rgba(11, 14, 17, 0.8) 100%);
+            z-index: 0;
+        }
+
+        .market-content-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        .market-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .market-header h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+            background: linear-gradient(90deg, #fff, #a0a5b1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Stats Row */
+        .market-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Ticker Bar */
+        .ticker-bar {
+            background: rgba(0, 0, 0, 0.3);
+            border-top: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 0;
+            margin-bottom: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+
+        .ticker-content {
+            display: inline-block;
+            animation: ticker 30s linear infinite;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            margin: 0 2rem;
+            font-size: 0.95rem;
+        }
+
+        .ticker-item strong {
+            margin-right: 8px;
+            color: var(--text-secondary);
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Main Grid Layout */
+        .market-grid {
+            display: grid;
+            grid-template-columns: 300px minmax(0, 1fr) 320px;
+            /* Sidebar, Chart, OrderBook */
+            gap: 20px;
+            height: calc(100vh - 350px);
+            min-height: 600px;
+        }
+
+        /* Common Panel Styles */
+        .panel {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-header {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--glass-border);
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Watchlist */
+        .watchlist {
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .watchlist-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .watchlist-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .watchlist-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .crop-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .crop-vol {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .item-price {
+            text-align: right;
+        }
+
+        .price-val {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .price-change {
+            font-size: 0.8rem;
+            margin-top: 2px;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            padding: 1px;
+            background: var(--grid-bg);
+            position: relative;
+        }
+
+        .chart-toolbar {
+            padding: 8px 16px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+        }
+
+        .time-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .time-btn:hover,
+        .time-btn.active {
+            background: #2a2e39;
+            color: var(--text-primary);
+            border-color: #4a5060;
+        }
+
+        .chart-container {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Order Book & Trade */
+        .order-book-panel {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .order-column-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .order-list {
+            flex: 1;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .order-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .order-row:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .price-up {
+            color: var(--accent-green);
+        }
+
+        .price-down {
+            color: var(--accent-red);
+        }
+
+        /* Trading Form */
+        .trade-panel {
+            padding: 16px;
+            border-top: 1px solid var(--glass-border);
+            background: rgba(30, 34, 45, 0.6);
+        }
+
+        .trade-type-toggles {
+            display: flex;
+            margin-bottom: 12px;
+            background: #000;
+            border-radius: 4px;
+            padding: 2px;
+        }
+
+        .trade-toggle {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .trade-toggle.active.buy {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        .trade-toggle.active.sell {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .form-input {
+            width: 100%;
+            background: #0b0e11;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .form-input:focus {
+            outline: 1px solid var(--accent-green);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn.buy {
+            background: var(--accent-green);
+            color: #000;
+        }
+
+        .action-btn.sell {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b0e11;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2a2e39;
+            border-radius: 3px;
+        }
+
+        /* Helpers */
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .market-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            .market-stats {
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .stock-market-container {
+                height: auto;
+                padding-bottom: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h4><img src="farm2market.jpeg" alt="Farm2Market" style="height: 40px; margin-right: 0.5rem;">
+                    <span>Farm2Market</span>
+                </h4>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" data-i18n="nav.home">Home</a></li>
+                <li><a href="trade.html" data-i18n="nav.trade">Trade</a></li>
+                <li><a href="analytics.html">Analytics</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li class="dropdown" id="authDropdown">
+                    <a href="#" class="dropbtn" id="authButton"><i class="fas fa-sign-in-alt"></i> Login <i
+                            class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content" id="authContent">
+                        <a href="login.html"><i class="fas fa-sign-in-alt"></i> Login</a>
+                        <a href="register.html"><i class="fas fa-user-plus"></i> Register</a>
+                        <a href="verification.html" id="verificationLink" style="display:none;"><i
+                                class="fas fa-shield-alt"></i> Verification</a>
+                        <a href="#" onclick="logout()" id="logoutLink" style="display:none;"><i
+                                class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+                <li><a href="weather.html"><i class="fas fa-cloud-sun"></i></a></li>
+                <li><a href="#" onclick="showLanguageOptions()"><i class="fas fa-language"></i></a></li>
+
+
+            </ul>
+        </div>
+    </nav>
+
+    <div class="stock-market-container">
+        <div class="market-content-wrapper">
+            <!-- Header & Stats -->
+            <div class="market-header">
+                <h1>Live Agri Stock Market</h1>
+                <div class="market-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="marketIndex">2,847.50</div>
+                        <div class="stat-label">Agri Index <span class="price-up" style="font-size: 0.8em">+1.6%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">₹45.6 Cr</div>
+                        <div class="stat-label">Volume</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">15,847</div>
+                        <div class="stat-label">Online Users</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ticker -->
+            <div class="ticker-bar">
+                <div class="ticker-content" id="tickerContent">
+                    <!-- Dynamic Ticker Items -->
+                </div>
+            </div>
+
+            <!-- Main Grid -->
+            <div class="market-grid">
+                <!-- Left: Watchlist -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <span>Watchlist</span>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">Agri-Commodities</div>
+                    </div>
+                    <div class="watchlist" id="watchlistItems">
+                        <!-- Dynamic Watchlist Items -->
+                    </div>
+                </div>
+
+                <!-- Center: Chart -->
+                <div class="panel">
+                    <div class="panel-header">
+                        <span id="cropName">WHEAT</span>
+                        <div style="display: flex; gap: 15px; font-size: 0.9rem;">
+                            <span id="currentPrice" class="price-up">₹2,150</span>
+                            <span id="priceChange" class="price-up">+2.3%</span>
+                        </div>
+                    </div>
+                    <div class="chart-section" style="flex: 1; display: flex; flex-direction: column;">
+                        <div class="chart-toolbar">
+                            <button class="time-btn" onclick="changeTimeframe('1m')">1M</button>
+                            <button class="time-btn" onclick="changeTimeframe('5m')">5M</button>
+                            <button class="time-btn" onclick="changeTimeframe('1h')">1H</button>
+                            <button class="time-btn active" onclick="changeTimeframe('1d')">1D</button>
+                            <button class="time-btn" onclick="changeTimeframe('1w')">1W</button>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="candlestickChart"></canvas>
+                        </div>
+                        <!-- Extra Info Bar overlay or bottom -->
+                        <div
+                            style="padding: 10px 15px; display: flex; gap: 20px; font-size: 0.85rem; border-top: 1px solid var(--glass-border);">
+                            <div>Vol: <span id="volume" style="color: white;">1,247</span></div>
+                            <div>High: <span id="dayHigh" style="color: var(--accent-green);">₹2,180</span></div>
+                            <div>Low: <span id="dayLow" style="color: var(--accent-red);">₹2,120</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Order Book & Trading -->
+                <div class="panel">
+                    <div class="panel-header">Order Book</div>
+
+                    <div class="order-book-panel">
+                        <!-- Sell Orders -->
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <div class="order-column-header">
+                                <div>Price</div>
+                                <div class="text-center">Qty</div>
+                                <div class="text-right">Total</div>
+                            </div>
+                            <div class="order-list" id="sellOrders" style="flex: 1;">
+                                <!-- Dynamic Sell Orders -->
+                            </div>
+                        </div>
+
+                        <!-- Middle Price Indicator (Optional) -->
+                        <div
+                            style="text-align: center; padding: 4px; border-top: 1px solid var(--glass-border); border-bottom: 1px solid var(--glass-border); font-weight: 600; font-size: 0.9rem;">
+                            <span id="midPrice">2150.00</span>
+                        </div>
+
+                        <!-- Buy Orders -->
+                        <div style="flex: 1; display: flex; flex-direction: column;">
+                            <div class="order-list" id="buyOrders" style="flex: 1;">
+                                <!-- Dynamic Buy Orders -->
+                            </div>
+                        </div>
+
+                        <!-- Trading Area -->
+                        <div class="trade-panel">
+                            <div class="trade-type-toggles">
+                                <button class="trade-toggle active buy" onclick="switchTab('buy')">BUY</button>
+                                <button class="trade-toggle sell" onclick="switchTab('sell')">SELL</button>
+                            </div>
+
+                            <input type="number" id="tradePrice" class="form-input" placeholder="Price (₹)">
+                            <input type="number" id="tradeQuantity" class="form-input" placeholder="Quantity (qt)">
+
+                            <div
+                                style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.85rem; color: var(--text-secondary);">
+                                <span>Total:</span>
+                                <span id="tradeTotal" style="color: white; font-weight: 600;">₹0</span>
+                            </div>
+
+                            <button class="action-btn buy" id="tradeButton" onclick="placeTrade()">BUY WHEAT</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Stock market data
+        const marketData = {
+            WHEAT: { price: 2150, change: 2.3, volume: 1247, high: 2180, low: 2120 },
+            RICE: { price: 1890, change: -1.2, volume: 892, high: 1920, low: 1870 },
+            COTTON: { price: 5670, change: 4.1, volume: 634, high: 5720, low: 5580 },
+            SUGARCANE: { price: 3200, change: 1.8, volume: 445, high: 3250, low: 3180 },
+            SOYBEAN: { price: 4350, change: -0.5, volume: 723, high: 4380, low: 4320 },
+            MAIZE: { price: 1750, change: 3.2, volume: 567, high: 1780, low: 1720 }
+        };
+
+        let selectedCrop = 'WHEAT';
+        let currentTradeType = 'buy';
+
+        // Colors
+        const THEME = {
+            green: '#00d09c',
+            red: '#ff4976',
+            grid: '#2a2e39',
+            text: '#ffffff',
+            textSec: '#a0a5b1'
+        };
+
+        // Initialize market
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeMarket();
+            startRealTimeUpdates();
+            setupEventListeners();
+        });
+
+        function initializeMarket() {
+            updateTicker();
+            updateWatchlist();
+            updateOrderBook();
+            updateCropInfo();
+            drawCandlestickChart();
+            updateTradeForm();
+        }
+
+        function setupEventListeners() {
+            const priceInput = document.getElementById('tradePrice');
+            const quantityInput = document.getElementById('tradeQuantity');
+            if (priceInput) priceInput.addEventListener('input', calculateTotal);
+            if (quantityInput) quantityInput.addEventListener('input', calculateTotal);
+
+            // Resize chart on window resize
+            window.addEventListener('resize', drawCandlestickChart);
+        }
+
+        function updateTicker() {
+            const ticker = document.getElementById('tickerContent');
+            if (!ticker) return;
+
+            let tickerHTML = '';
+            Object.entries(marketData).forEach(([crop, data]) => {
+                const changeClass = data.change > 0 ? 'price-up' : 'price-down';
+                tickerHTML += `
+                    <div class="ticker-item">
+                        <strong>${crop}</strong>
+                        <span>₹${data.price}</span>
+                        <span class="${changeClass}" style="margin-left: 5px;">${data.change > 0 ? '+' : ''}${data.change}%</span>
+                    </div>
+                `;
+            });
+            ticker.innerHTML = tickerHTML;
+        }
+
+        function updateWatchlist() {
+            const watchlist = document.getElementById('watchlistItems');
+            if (!watchlist) return;
+
+            let watchlistHTML = '';
+            Object.entries(marketData).forEach(([crop, data]) => {
+                const changeClass = data.change > 0 ? 'price-up' : 'price-down';
+                const activeClass = crop === selectedCrop ? 'active' : '';
+
+                watchlistHTML += `
+                    <div class="watchlist-item ${activeClass}" onclick="selectCrop('${crop}')">
+                        <div>
+                            <div class="crop-name">${crop}</div>
+                            <div class="crop-vol">${data.volume} Vol</div>
+                        </div>
+                        <div class="item-price">
+                            <div class="price-val">₹${data.price}</div>
+                            <div class="price-change ${changeClass}">${data.change > 0 ? '+' : ''}${data.change}%</div>
+                        </div>
+                    </div>
+                `;
+            });
+            watchlist.innerHTML = watchlistHTML;
+        }
+
+        function updateOrderBook() {
+            const sellOrders = document.getElementById('sellOrders');
+            const buyOrders = document.getElementById('buyOrders');
+            if (!sellOrders || !buyOrders) return;
+
+            const currentPrice = marketData[selectedCrop].price;
+
+            // Generate sell orders (Red)
+            let sellHTML = '';
+            for (let i = 5; i > 0; i--) {
+                const price = currentPrice + (i * 2);
+                const qty = Math.floor(Math.random() * 50) + 10;
+                sellHTML += `
+                    <div class="order-row">
+                        <div class="text-left price-down">₹${price}</div>
+                        <div class="text-center">${qty}</div>
+                        <div class="text-right" style="opacity: 0.8;">₹${(price * qty).toLocaleString()}</div>
+                    </div>
+                `;
+            }
+
+            // Generate buy orders (Green)
+            let buyHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const price = currentPrice - (i * 2);
+                const qty = Math.floor(Math.random() * 50) + 10;
+                buyHTML += `
+                    <div class="order-row">
+                        <div class="text-left price-up">₹${price}</div>
+                        <div class="text-center">${qty}</div>
+                        <div class="text-right" style="opacity: 0.8;">₹${(price * qty).toLocaleString()}</div>
+                    </div>
+                `;
+            }
+
+            sellOrders.innerHTML = sellHTML;
+            buyOrders.innerHTML = buyHTML;
+
+            // Update mid price
+            const mid = document.getElementById('midPrice');
+            if (mid) mid.innerHTML = `₹${currentPrice.toFixed(2)}`;
+        }
+
+        function updateCropInfo() {
+            const data = marketData[selectedCrop];
+            const changeClass = data.change > 0 ? 'price-up' : 'price-down';
+
+            updateElementText('cropName', selectedCrop);
+            updateElementText('currentPrice', `₹${data.price}`);
+            updateElementClass('currentPrice', changeClass);
+            updateElementText('priceChange', `${data.change > 0 ? '+' : ''}${data.change}%`);
+            updateElementClass('priceChange', changeClass);
+
+            updateElementText('volume', data.volume);
+            updateElementText('dayHigh', `₹${data.high}`);
+            updateElementText('dayLow', `₹${data.low}`);
+        }
+
+        function updateElementText(id, text) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+
+        function updateElementClass(id, className) {
+            const el = document.getElementById(id);
+            if (el) el.className = className;
+        }
+
+        function drawCandlestickChart() {
+            const canvas = document.getElementById('candlestickChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+
+            const data = marketData[selectedCrop];
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid
+            ctx.strokeStyle = THEME.grid;
+            ctx.lineWidth = 0.5;
+            // Vertical lines
+            for (let i = 0; i <= 6; i++) {
+                const x = (canvas.width / 6) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            // Horizontal lines
+            for (let i = 0; i <= 4; i++) {
+                const y = (canvas.height / 4) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Get or initialize price history
+            if (!window.priceHistory) window.priceHistory = {};
+            if (!window.priceHistory[selectedCrop]) {
+                window.priceHistory[selectedCrop] = [];
+                for (let i = 50; i >= 0; i--) {
+                    window.priceHistory[selectedCrop].push({
+                        price: data.price + (Math.random() - 0.5) * 50,
+                        timestamp: Date.now() - (i * 60000)
+                    });
+                }
+            }
+
+            // Add current price
+            window.priceHistory[selectedCrop].push({
+                price: data.price,
+                timestamp: Date.now()
+            });
+
+            if (window.priceHistory[selectedCrop].length > 60) {
+                window.priceHistory[selectedCrop].shift();
+            }
+
+            const prices = window.priceHistory[selectedCrop];
+            const minPrice = Math.min(...prices.map(p => p.price)) * 0.99;
+            const maxPrice = Math.max(...prices.map(p => p.price)) * 1.01;
+            const priceRange = maxPrice - minPrice || 1;
+
+            // Gradient Fill
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            const color = data.change > 0 ? THEME.green : THEME.red;
+            gradient.addColorStop(0, color + '40'); // 25% opacity
+            gradient.addColorStop(1, color + '00'); // 0% opacity
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            prices.forEach((point, index) => {
+                const x = (index / (prices.length - 1)) * canvas.width;
+                const y = canvas.height - ((point.price - minPrice) / priceRange) * canvas.height;
+                if (index === 0) ctx.moveTo(x, canvas.height);
+                ctx.lineTo(x, y);
+            });
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.fill();
+
+            // Line
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            prices.forEach((point, index) => {
+                const x = (index / (prices.length - 1)) * canvas.width;
+                const y = canvas.height - ((point.price - minPrice) / priceRange) * canvas.height;
+                if (index === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.stroke();
+
+            // Current Price Dot
+            const lastPoint = prices[prices.length - 1];
+            const lastY = canvas.height - ((lastPoint.price - minPrice) / priceRange) * canvas.height;
+
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.arc(canvas.width, lastY, 4, 0, 2 * Math.PI);
+            ctx.fill();
+
+            // Dotted Line to Axis
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, lastY);
+            ctx.lineTo(canvas.width, lastY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function selectCrop(crop) {
+            selectedCrop = crop;
+            initializeMarket();
+        }
+
+        function changeTimeframe(timeframe) {
+            const btns = document.querySelectorAll('.time-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            // Logic to fetch different timeframe data would go here
+            drawCandlestickChart();
+        }
+
+        function switchTab(type) {
+            currentTradeType = type;
+            const buyBtn = document.querySelector('.trade-toggle.buy');
+            const sellBtn = document.querySelector('.trade-toggle.sell');
+
+            if (type === 'buy') {
+                buyBtn.classList.add('active');
+                sellBtn.classList.remove('active');
+            } else {
+                sellBtn.classList.add('active');
+                buyBtn.classList.remove('active');
+            }
+            updateTradeForm();
+        }
+
+        function updateTradeForm() {
+            const button = document.getElementById('tradeButton');
+            const priceInput = document.getElementById('tradePrice');
+
+            const price = marketData[selectedCrop].price;
+
+            if (currentTradeType === 'buy') {
+                button.textContent = `BUY ${selectedCrop}`;
+                button.className = 'action-btn buy';
+                priceInput.value = price;
+            } else {
+                button.textContent = `SELL ${selectedCrop}`;
+                button.className = 'action-btn sell';
+                priceInput.value = price;
+            }
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const price = parseFloat(document.getElementById('tradePrice').value) || 0;
+            const quantity = parseFloat(document.getElementById('tradeQuantity').value) || 0;
+            const total = price * quantity;
+            const totalEl = document.getElementById('tradeTotal');
+            if (totalEl) totalEl.textContent = `₹${total.toLocaleString()}`;
+        }
+
+        function placeTrade() {
+            const price = document.getElementById('tradePrice').value;
+            const quantity = document.getElementById('tradeQuantity').value;
+
+            if (!price || !quantity) {
+                alert('Please enter price and quantity');
+                return;
+            }
+
+            const total = price * quantity;
+            // In a real app, this would send a request to the backend
+            alert(`${currentTradeType.toUpperCase()} order placed for ${selectedCrop}:\nQty: ${quantity}\nPrice: ₹${price}\nTotal: ₹${total.toLocaleString()}`);
+
+            document.getElementById('tradeQuantity').value = '';
+            calculateTotal();
+        }
+
+        function startRealTimeUpdates() {
+            setInterval(() => {
+                Object.keys(marketData).forEach(crop => {
+                    const change = (Math.random() - 0.5) * 1.5;
+                    marketData[crop].price = Math.round(marketData[crop].price * (1 + change / 100));
+                    marketData[crop].change = parseFloat((marketData[crop].change + change).toFixed(2));
+                });
+
+                updateTicker();
+                updateWatchlist();
+                updateOrderBook();
+                updateCropInfo(); // Updates top chart overlay info
+            }, 3000);
+
+            // Animate Chart
+            setInterval(() => {
+                if (window.priceHistory && window.priceHistory[selectedCrop]) {
+                    const lastPrice = window.priceHistory[selectedCrop][window.priceHistory[selectedCrop].length - 1].price;
+                    const noise = (Math.random() - 0.5) * 10;
+                    window.priceHistory[selectedCrop].push({
+                        price: lastPrice + noise,
+                        timestamp: Date.now()
+                    });
+                    if (window.priceHistory[selectedCrop].length > 60) window.priceHistory[selectedCrop].shift();
+                    drawCandlestickChart();
+                }
+            }, 1000);
+        }    </script>
+
+    <!-- AI Help Assistant -->
+    <script src="js/ai-assistant.js"></script>
+    <script src="js/translations.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/profile-widget.js"></script>
+
+</body>
+
+</html>

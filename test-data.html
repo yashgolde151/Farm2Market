@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Data Sync</title>
+</head>
+
+<body>
+    <h1>Test Data Synchronization</h1>
+
+    <h2>Add Test User</h2>
+    <button onclick="addTestUser()">Add Test Farmer</button>
+    <button onclick="addTestBuyer()">Add Test Buyer</button>
+
+    <h2>Add Test Document</h2>
+    <button onclick="addTestDocument()">Add Test Document</button>
+
+    <h2>View Data</h2>
+    <button onclick="viewUsers()">View Users</button>
+    <button onclick="viewDocuments()">View Documents</button>
+
+    <div id="output"></div>
+
+    <script>
+        function addTestUser() {
+            const user = {
+                id: Date.now(),
+                name: 'Test Farmer ' + Math.floor(Math.random() * 100),
+                email: 'farmer' + Math.floor(Math.random() * 100) + '@test.com',
+                mobile: '98765' + Math.floor(Math.random() * 10000).toString().padStart(5, '0'),
+                role: 'farmer',
+                registrationDate: new Date().toISOString()
+            };
+
+            const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+            users.push(user);
+            localStorage.setItem('farm2market_users', JSON.stringify(users));
+            localStorage.setItem('newUserProfile', JSON.stringify(user));
+
+            alert('Test farmer added!');
+        }
+
+        function addTestBuyer() {
+            const user = {
+                id: Date.now(),
+                name: 'Test Buyer ' + Math.floor(Math.random() * 100),
+                email: 'buyer' + Math.floor(Math.random() * 100) + '@test.com',
+                mobile: '98765' + Math.floor(Math.random() * 10000).toString().padStart(5, '0'),
+                role: 'buyer',
+                registrationDate: new Date().toISOString()
+            };
+
+            const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+            users.push(user);
+            localStorage.setItem('farm2market_users', JSON.stringify(users));
+            localStorage.setItem('newUserProfile', JSON.stringify(user));
+
+            alert('Test buyer added!');
+        }
+
+        function addTestDocument() {
+            const doc = {
+                id: Date.now(),
+                userId: 'test@test.com',
+                userName: 'Test User',
+                userRole: 'farmer',
+                fileName: 'test_document.pdf',
+                fileType: 'application/pdf',
+                fileSize: 245760,
+                documentType: 'aadhar',
+                fileData: 'data:application/pdf;base64,test',
+                uploadDate: new Date().toISOString(),
+                status: 'pending',
+                rejectionReason: null
+            };
+
+            const docs = JSON.parse(localStorage.getItem('farm2market_documents') || '[]');
+            const docExists = docs.find(d => d.fileName === 'land_record.pdf');
+            localStorage.setItem('farm2market_documents', JSON.stringify(docs));
+
+            alert('Test document added!');
+        }
+
+        function viewUsers() {
+            const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+            document.getElementById('output').innerHTML = '<h3>Users (' + users.length + '):</h3><pre>' + JSON.stringify(users, null, 2) + '</pre>';
+        }
+
+        function viewDocuments() {
+            const docs = JSON.parse(localStorage.getItem('farm2market_documents') || '[]');
+            document.getElementById('output').innerHTML = '<h3>Documents (' + docs.length + '):</h3><pre>' + JSON.stringify(docs, null, 2) + '</pre>';
+        }
+    </script>
+</body>
+
+</html>

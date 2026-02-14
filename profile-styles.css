@@ -1,0 +1,367 @@
+/* Profile Page - Premium Midnight Blue & Gold Theme */
+
+:root {
+    /* "Royalty" Palette */
+    --bg-page: #fdfbf7;
+    /* Very light cream/off-white */
+    --primary-midnight: #0F2027;
+    /* Deep Blue-Black */
+    --secondary-blue: #203A43;
+    /* Rich Navy */
+    --accent-gold: #D4AF37;
+    /* Metallic Gold */
+    --accent-gold-light: #FDB931;
+    --text-main: #1A1A1A;
+    --text-light: #555;
+
+    --card-bg: #FFFFFF;
+    --card-radius: 12px;
+    /* More angular/professional */
+    --card-shadow: 0 8px 30px rgba(15, 32, 39, 0.1);
+    /* Deep Shadow */
+
+    --sidebar-width: 300px;
+}
+
+body.profile-page-body {
+    background-color: var(--bg-page);
+    background-image: linear-gradient(120deg, #fdfbf7 0%, #ebedee 100%);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 6rem auto 3rem;
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+}
+
+/* --- Left Sidebar --- */
+.profile-sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: 6rem;
+}
+
+.profile-card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    border-top: 4px solid var(--accent-gold);
+    /* Gold Top Border */
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Texture for Card Header */
+.profile-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(to bottom, rgba(212, 175, 55, 0.05), transparent);
+    z-index: 0;
+}
+
+.profile-avatar {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 1.5rem;
+    z-index: 1;
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-gold);
+    /* Gold Border */
+    padding: 4px;
+    background: white;
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+}
+
+.photo-upload .upload-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: var(--accent-gold);
+    color: white;
+    border: 2px solid white;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.photo-upload .upload-btn:hover {
+    transform: scale(1.1);
+    background: var(--accent-gold-light);
+}
+
+.profile-card h2 {
+    margin: 0.5rem 0 0.2rem;
+    font-size: 1.6rem;
+    color: var(--primary-midnight);
+    /* Dark Header */
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.profile-card p {
+    color: var(--accent-gold);
+    /* Gold Role Text */
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.profile-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+}
+
+.btn-logout {
+    background: white;
+    color: #E53935;
+    border: 1px solid #E53935;
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+.btn-logout:hover {
+    background: #FFEBEE;
+    box-shadow: 0 4px 10px rgba(229, 57, 53, 0.1);
+}
+
+.sidebar-menu {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 1.2rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 600;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.sidebar-menu a i {
+    width: 20px;
+    text-align: center;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+.sidebar-menu a:hover {
+    background: #f8f9fa;
+    color: var(--primary-midnight);
+}
+
+.sidebar-menu a:hover i {
+    color: var(--primary-midnight);
+}
+
+.sidebar-menu a.active {
+    background: rgba(212, 175, 55, 0.05);
+    /* Light Gold tint */
+    color: var(--primary-midnight);
+    border-left-color: var(--accent-gold);
+}
+
+.sidebar-menu a.active i {
+    color: var(--accent-gold);
+}
+
+/* --- Main Content Area --- */
+.profile-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-section {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    box-shadow: var(--card-shadow);
+    padding: 2.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.section-header {
+    margin-bottom: 2.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--primary-midnight);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+}
+
+.section-header h3 i {
+    color: var(--accent-gold);
+}
+
+/* Edit Form */
+.profile-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.6rem;
+    color: var(--text-light);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    /* Slightly sharper radius */
+    background: #FAFAFA;
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+    /* Gold glow focus */
+}
+
+.form-actions {
+    margin-top: 2.5rem;
+    text-align: right;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, var(--primary-midnight) 0%, var(--secondary-blue) 100%);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(32, 58, 67, 0.2);
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(32, 58, 67, 0.3);
+    background: linear-gradient(135deg, var(--secondary-blue) 0%, var(--primary-midnight) 100%);
+}
+
+/* Verification Banner Override */
+.verification-card {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    padding: 2rem;
+    border: 1px solid #eee;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.verification-status {
+    background: #f0f4c3;
+    /* Light Lime/Gold */
+    border: 1px solid #e6ee9c;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-weight: 700;
+    color: #827717;
+    /* Dark Olive/Gold text */
+}
+
+/* Navbar Overrides for Premium Theme */
+.profile-page-body .navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.profile-page-body .nav-logo {
+    color: var(--primary-midnight);
+}
+
+.profile-page-body .nav-menu a {
+    color: var(--text-light);
+}
+
+.profile-page-body .nav-menu a:hover {
+    color: var(--accent-gold);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .profile-container {
+        flex-direction: column;
+    }
+
+    .profile-sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 2rem;
+    }
+
+    .profile-form .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

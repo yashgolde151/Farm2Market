@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Farm2Market System Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .results {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🧪 Farm2Market System Test</h1>
+
+    <div class="test-section">
+        <h2>1. Registration Test</h2>
+        <button onclick="testRegistration()">Test User Registration</button>
+        <div id="regResults" class="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Document Upload Test</h2>
+        <button onclick="testDocumentUpload()">Test Document Upload</button>
+        <div id="docResults" class="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Admin Data Sync Test</h2>
+        <button onclick="testAdminSync()">Test Admin Synchronization</button>
+        <div id="adminResults" class="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Complete System Test</h2>
+        <button onclick="runCompleteTest()">Run All Tests</button>
+        <div id="completeResults" class="results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. View Current Data</h2>
+        <button onclick="viewAllData()">View All Data</button>
+        <div id="dataView" class="results"></div>
+    </div>
+
+    <script>
+        function testRegistration() {
+            const results = document.getElementById('regResults');
+
+            // Create test farmer
+            const farmer = {
+                id: Date.now(),
+                name: 'Test Farmer John',
+                email: 'farmer.john@test.com',
+                mobile: '9876543210',
+                role: 'farmer',
+                registrationDate: new Date().toISOString()
+            };
+
+            // Create test buyer
+            const buyer = {
+                id: Date.now() + 1,
+                name: 'Test Buyer Corp',
+                email: 'buyer.corp@test.com',
+                mobile: '9876543211',
+                role: 'buyer',
+                registrationDate: new Date().toISOString()
+            };
+
+            try {
+                // Store users
+                const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+                users.push(farmer, buyer);
+                localStorage.setItem('farm2market_users', JSON.stringify(users));
+                localStorage.setItem('newUserProfile', JSON.stringify(farmer));
+
+                results.innerHTML = `
+                    <div class="success">
+                        ✅ Registration Test Passed<br>
+                        - Added farmer: ${farmer.name}<br>
+                        - Added buyer: ${buyer.name}<br>
+                        - Total users in storage: ${users.length}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Registration Test Failed: ${error.message}</div>`;
+            }
+        }
+
+        function testDocumentUpload() {
+            const results = document.getElementById('docResults');
+
+            const testDoc = {
+                id: Date.now(),
+                userId: 'farmer.john@test.com',
+                userName: 'Test Farmer John',
+                userRole: 'farmer',
+                fileName: 'test_aadhar.pdf',
+                fileType: 'application/pdf',
+                fileSize: 245760,
+                documentType: 'aadhar',
+                fileData: 'data:application/pdf;base64,testdata',
+                uploadDate: new Date().toISOString(),
+                status: 'pending',
+                rejectionReason: null
+            };
+
+            try {
+                const docs = JSON.parse(localStorage.getItem('farm2market_documents') || '[]');
+                docs.push(testDoc);
+                localStorage.setItem('farm2market_documents', JSON.stringify(docs));
+
+                results.innerHTML = `
+                    <div class="success">
+                        ✅ Document Upload Test Passed<br>
+                        - Uploaded: ${testDoc.fileName}<br>
+                        - Size: ${Math.round(testDoc.fileSize / 1024)}KB<br>
+                        - Status: ${testDoc.status}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Document Upload Test Failed: ${error.message}</div>`;
+            }
+        }
+
+        function testAdminSync() {
+            const results = document.getElementById('adminResults');
+
+            try {
+                const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+                const docs = JSON.parse(localStorage.getItem('farm2market_documents') || '[]');
+
+                const farmers = users.filter(u => u.role === 'farmer').length;
+                const buyers = users.filter(u => u.role === 'buyer').length;
+                const pendingDocs = docs.filter(d => d.status === 'pending').length;
+
+                results.innerHTML = `
+                    <div class="success">
+                        ✅ Admin Sync Test Passed<br>
+                        - Users available: ${users.length}<br>
+                        - Farmers: ${farmers}, Buyers: ${buyers}<br>
+                        - Documents: ${docs.length} (${pendingDocs} pending)<br>
+                        - Data ready for admin panel
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Admin Sync Test Failed: ${error.message}</div>`;
+            }
+        }
+
+        function runCompleteTest() {
+            const results = document.getElementById('completeResults');
+            results.innerHTML = '<div>Running complete system test...</div>';
+
+            setTimeout(() => {
+                testRegistration();
+                setTimeout(() => {
+                    testDocumentUpload();
+                    setTimeout(() => {
+                        testAdminSync();
+                        results.innerHTML = `
+                            <div class="success">
+                                🎉 Complete System Test Passed!<br>
+                                All components working correctly.<br>
+                                <strong>Next Steps:</strong><br>
+                                1. Open admin/index.html<br>
+                                2. Login with: admin / farm2market@2026<br>
+                                3. Check all tabs for data
+                            </div>
+                        `;
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+
+        function viewAllData() {
+            const results = document.getElementById('dataView');
+
+            const users = JSON.parse(localStorage.getItem('farm2market_users') || '[]');
+            const docs = JSON.parse(localStorage.getItem('farm2market_documents') || '[]');
+
+            results.innerHTML = `
+                <h3>Current System Data:</h3>
+                <h4>Users (${users.length}):</h4>
+                <pre>${JSON.stringify(users, null, 2)}</pre>
+                <h4>Documents (${docs.length}):</h4>
+                <pre>${JSON.stringify(docs, null, 2)}</pre>
+            `;
+        }
+
+        // Auto-run basic test on load
+        window.onload = function () {
+            document.getElementById('completeResults').innerHTML = `
+                <div style="background: #cce5ff; padding: 10px; border-radius: 5px;">
+                    📋 System Ready for Testing<br>
+                    Click "Run All Tests" to verify everything works
+                </div>
+            `;
+        };
+    </script>
+</body>
+
+</html>

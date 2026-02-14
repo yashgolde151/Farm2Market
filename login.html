@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Farm2Market</title>
+    <!-- <link rel="stylesheet" href="css/styles.css"> --> <!-- Removed to prevent conflicts -->
+    <link rel="stylesheet" href="auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body class="auth-body">
+    <div class="auth-language-selector">
+        <select onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="gu">ગુજરાતી</option>
+            <option value="mr">मराठी</option>
+            <option value="ta">தமிழ்</option>
+            <option value="te">తెలుగు</option>
+            <option value="kn">ಕನ್ನಡ</option>
+            <option value="ml">മലയാളം</option>
+        </select>
+    </div>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <button class="close-btn" onclick="goToHome()" title="Go back to home">
+                    <i class="fas fa-times"></i>
+                </button>
+                <i class="fas fa-sign-in-alt logo-icon"></i>
+                <h2 data-i18n="auth.loginTitle">Login to Farm2Market</h2>
+                <p data-i18n="auth.loginSubtitle">Access India's First Agri Stock Market</p>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username" data-i18n="auth.email">Email Address</label>
+                    <input type="text" id="username" placeholder="Enter email" data-i18n="auth.emailPlaceholder"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" data-i18n="auth.password">Password</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" placeholder="Enter password"
+                            data-i18n="auth.passwordPlaceholder" required>
+                        <button type="button" onclick="togglePassword()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #666;">
+                            <i id="passwordToggle" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="remember">
+                        <label for="remember" data-i18n="auth.rememberMe">Remember me</label>
+                    </div>
+                    <a href="#" class="forgot-password" data-i18n="auth.forgotPassword">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary btn-block" data-i18n="auth.loginBtn">Login</button>
+            </form>
+
+            <div class="auth-footer">
+                <p><span data-i18n="auth.noAccount">Don't have an account?</span> <a href="register.html"
+                        data-i18n="auth.registerHere">Register here</a></p>
+
+                <div class="demo-credentials">
+                    <p class="demo-title">Demo Credentials <i class="fas fa-info-circle"></i></p>
+                    <div class="demo-row">
+                        <span><strong>Farmer:</strong> farmer@gmail.com / farmer</span>
+                    </div>
+                    <div class="demo-row">
+                        <span><strong>Buyer:</strong> buyer@gmail.com / buyer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="translations.js"></script>
+    <script src="i18n.js"></script>
+    <script src="translator.js"></script>
+    <script src="auth.js?v=1.1"></script>
+    <script>
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.getElementById('passwordToggle');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.className = 'fas fa-eye-slash';
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.className = 'fas fa-eye';
+            }
+        }
+    </script>
+</body>
+
+</html>

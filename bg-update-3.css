@@ -1,0 +1,19 @@
+.hero-section {
+    position: relative;
+    /* Updated Background: Lush Green Indian Fields (Natural Beauty) */
+    background:
+        linear-gradient(rgba(0, 40, 0, 0.4), rgba(0, 60, 0, 0.6)),
+        /* Deep Green overlay for Emerald text pop */
+        url('https://images.unsplash.com/photo-1596484552993-9c5950000a6e?q=80&w=1920&auto=format&fit=crop');
+    /* Lush Rice Paddy Field */
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    border-bottom: 2px solid #4CAF50;
+}
+
+/* Removing Tech Grid for a cleaner, nature-first look */
+.hero-section::after {
+    display: none;
+}
